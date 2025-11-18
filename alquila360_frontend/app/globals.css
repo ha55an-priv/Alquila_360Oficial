@@ -184,3 +184,57 @@ body {
   color: #008080;
   font-size: 15px;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base global */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+/* Box sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Formularios heredan la fuente */
+input,
+button,
+textarea,
+select {
+  font-family: inherit;
+}
+
+/* Header fijo */
+.site-header {
+  background-color: #ffffff !important;
+  z-index: 99999 !important;
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Botones de submit dentro de formularios */
+form button[type="submit"] {
+  background-color: #333 !important;
+  color: #ffffff !important;
+  margin-top: 16px !important;
+}
+
+/* Enlaces */
+a {
+  color: #4b5563 !important;
+  text-decoration: none !important;
+}
+
+a:hover {
+  text-decoration: underline !important;
+}

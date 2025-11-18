@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";  
 
 export default function Home() {
   const [zona, setZona] = useState("Cercado");
@@ -16,12 +17,12 @@ export default function Home() {
           </h1>
         </div>
         <div className="header-right">
-          <a href="#" className="login">
+          <Link href="/login" className="login">
             Login
-          </a>
-          <a href="#" className="signup">
+          </Link>
+          <Link href="/register" className="signup">
             Sign Up
-          </a>
+          </Link>
         </div>
       </header>
 
