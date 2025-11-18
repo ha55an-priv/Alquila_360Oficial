@@ -1,15 +1,21 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import AppDataSource from './data-source';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
-  try {
-    AppDataSource.initialize()
-  } catch (error) {
-    console.log(error)
-  }
+  const app = await NestFactory.create(AppModule);
 
-  const app = await NestFactory.create(AppModule, { cors: true });
-  await app.listen(process.env.PORT ?? 3001);
+  app.enableCors();
+
+  // Configurar body parser
+  app.use(bodyParser.json({ limit: '10mb' }));
+  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
+
+  const port = 3000;
+  await app.listen(port);
+
+  console.log(`Servidor corriendo en http://localhost:${port}`);
 }
+
 bootstrap();
+  
