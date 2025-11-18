@@ -1,14 +1,15 @@
 import { DataSource } from "typeorm"
 import { User } from "./entity/user.entity";
+import { Ticket } from "./entity/ticket.entity";
 
 const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
     port: 3306,
-    username: "alquila360_admin",
+    username: "root",
     password: "123456789",
     database: "alquila360",
-    entities: [User],
+    entities: [User, Ticket],
     synchronize: true,
     logging: false,
 })
