@@ -1,0 +1,12 @@
+{
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/node": "^24.10.1",
+    "bcrypt": "^6.0.0",
+    "rimraf": "^6.1.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@nestjs/typeorm": "^11.0.0"
+  }
+}

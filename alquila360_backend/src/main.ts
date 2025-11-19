@@ -4,12 +4,20 @@ import AppDataSource from './data-source';
 
 async function bootstrap() {
   try {
-    AppDataSource.initialize()
-  } catch (error) {
-    console.log(error)
+        await AppDataSource.initialize(); 
+        console.log("Conexión a la base de datos establecida y tablas sincronizadas.");
+    } catch (error) {
+        console.error("Error al inicializar la base de datos:", error);
+        process.exit(1); 
+    }
+    
+    // Arrancar NestJS
+    const app = await NestFactory.create(AppModule, { cors: true });
+    
+    const port = process.env.PORT ?? 3001; 
+    await app.listen(port);
+    console.log(`Servidor NestJS corriendo en el puerto: ${port}`);
   }
 
-  const app = await NestFactory.create(AppModule, { cors: true });
-  await app.listen(process.env.PORT ?? 3001);
-}
 bootstrap();
+  
