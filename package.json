@@ -1,12 +1,26 @@
 {
-  "devDependencies": {
-    "@types/bcrypt": "^6.0.0",
-    "@types/node": "^24.10.1",
-    "bcrypt": "^6.0.0",
-    "rimraf": "^6.1.0",
-    "typescript": "^5.9.3"
+  "name": "alquila_360oficial-1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ha55an-priv/Alquila_360Oficial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ha55an-priv/Alquila_360Oficial/issues"
+  },
+  "homepage": "https://github.com/ha55an-priv/Alquila_360Oficial#readme",
   "dependencies": {
-    "@nestjs/typeorm": "^11.0.0"
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
   }
 }

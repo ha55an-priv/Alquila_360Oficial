@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import AppDataSource from './data-source';
+import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
   try {
