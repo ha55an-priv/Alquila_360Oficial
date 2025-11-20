@@ -12,13 +12,13 @@ export class UserService {
         return await AppDataSource.getRepository(User).find();
     }
 
-    async getUserById(id: number) {
-        return await AppDataSource.getRepository(User).findOneBy({ id });
+    async getUserById(ci: number) {
+        return await AppDataSource.getRepository(User).findOneBy({ ci });
     }
 
-    async updateUser(id: number, userData: Partial<User>) {
-        await AppDataSource.getRepository(User).update(id, userData);
-        return this.getUserById(id);
+    async updateUser(ci: number, userData: Partial<User>) {
+        await AppDataSource.getRepository(User).update(ci, userData);
+        return this.getUserById(ci);
     }
 
     async deleteUser(id: number) {

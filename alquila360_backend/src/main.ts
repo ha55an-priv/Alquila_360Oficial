@@ -3,19 +3,21 @@ import { AppModule } from './app.module';
 import * as bodyParser from 'body-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-  app.enableCors();
-
-  // Configurar body parser
-  app.use(bodyParser.json({ limit: '10mb' }));
-  app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
-
-  const port = 3000;
-  await app.listen(port);
-
-  console.log(`Servidor corriendo en http://localhost:${port}`);
-}
+  try {
+        await AppDataSource.initialize(); 
+        console.log("Conexión a la base de datos establecida y tablas sincronizadas.");
+    } catch (error) {
+        console.error("Error al inicializar la base de datos:", error);
+        process.exit(1); 
+    }
+    
+    // Arrancar NestJS
+    const app = await NestFactory.create(AppModule, { cors: true });
+    
+    const port = process.env.PORT ?? 3001; 
+    await app.listen(port);
+    console.log(`Servidor NestJS corriendo en el puerto: ${port}`);
+  }
 
 bootstrap();
   
