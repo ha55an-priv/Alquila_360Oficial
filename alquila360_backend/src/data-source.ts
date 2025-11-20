@@ -39,7 +39,7 @@ const AppDataSource = new DataSource({
         PagoTecnico
     ],
     
-    synchronize: true, // Esto es clave para crear/actualizar las tablas
+    synchronize: false, // Esto es clave para crear/actualizar las tablas
     logging: true, // Cambia a 'true' para ver las consultas SQL (útil para debug)
 });
 
