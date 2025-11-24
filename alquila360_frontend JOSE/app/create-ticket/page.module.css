@@ -1,0 +1,97 @@
+/* app/create-ticket/page.module.css */
+
+.mainContent {
+    max-width: 1200px; /* Ajusta este valor según necesites */
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.formContainer {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+.ticketLayout {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* 1 parte para fotos, 2 partes para info */
+    gap: 2rem;
+}
+
+.photosPrioritySection {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.photoCard {
+    height: 256px; /* Altura de la tarjeta de fotos */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #f3f3ee; /* Color claro para la tarjeta de fotos */
+    border: 2px dashed #d1d1cf;
+    border-radius: 6px;
+}
+
+.priorityGroup {
+    display: flex;
+    gap: 1rem;
+}
+
+.priorityButton {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.1s;
+}
+
+.priorityButton:hover {
+    transform: scale(1.1);
+}
+
+.red { background-color: #ef4444; } /* Alta */
+.orange { background-color: #f97316; } /* Media */
+.green { background-color: #22c55e; } /* Baja */
+
+.infoDescriptionSection {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.infoGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.ticketNumberCard {
+    background-color: #d1d1cf; /* Color similar al mockup para Ticket # */
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.descriptionArea {
+    min-height: 150px; /* Altura mínima para el textarea */
+    resize: vertical;
+    padding: 1rem;
+    background-color: #fff8f0; /* Color de fondo suave para la descripción */
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding-top: 1rem;
+}
