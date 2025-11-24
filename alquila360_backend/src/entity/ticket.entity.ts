@@ -3,6 +3,7 @@ import { Propiedad } from "./propiedad.entity";
 import { User } from "./user.entity"; 
 import { Problema } from "./problema.entity";
 import { PagoTecnico } from "./pagoTecnico.entity";
+import { TicketPhoto } from "./photo.entity";
 
 @Entity('Ticket')
 export class Ticket {
@@ -30,8 +31,18 @@ export class Ticket {
     @Column({ name: 'Fecha_Reporte', type: 'date', nullable: false })
     fechaReporte: Date;
 
+    @Column({ name: 'Fecha_Cierre', type: 'date', nullable: true })
+    fechaCierre?: Date | null;
+
     @Column({ type: 'nvarchar', length: 50, nullable: true })
     estado: string | null; 
+
+    @OneToMany(() => TicketPhoto, photo => photo.ticket, { cascade: true })
+    fotos?: TicketPhoto[];
+
+    
+    
+    
 
     @ManyToMany(() => Problema, problema => problema.tickets)
     @JoinTable({

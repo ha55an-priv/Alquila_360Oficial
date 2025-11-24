@@ -9,7 +9,7 @@ export class Property {
   id: number;
 
  
- @ManyToOne(() => User, user => user.properties)
+ @ManyToOne(() => User, user => user.propiedades)
   @JoinColumn({ name: 'ownerId' }) 
   owner: User;
   
