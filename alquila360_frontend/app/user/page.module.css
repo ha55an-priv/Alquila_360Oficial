@@ -1,0 +1,71 @@
+.userContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: gray;
+}
+
+.userCards {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: gray;
+}
+
+.userCard {
+    background-color: white;
+    width: 600px;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border-width: 3px;
+}
+
+.userForm {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 20px;
+    background-color: white;
+    padding: 20px;
+}
+
+.userFormInput {
+    background-color: white;
+    border-width: 3px;
+    border-radius: 15px;
+    border-color: black;
+}
+
+.userFormButton {
+    background-color: green;
+    color: white;
+    border-width: 3px;
+    border-radius: 15px;
+    border-color: green;
+    cursor: pointer;
+}
+
+.userFormButton:hover {
+    background-color: white;
+    color: green;
+    border-color: green;
+}
+
+.userCardButton {
+    background-color: red;
+    color: white;
+    border-width: 3px;
+    border-radius: 15px;
+    border-color: red;
+    padding: 10px 30px;
+    cursor: pointer;
+}
+
+.userCardButton:hover {
+    background-color: white;
+    color: red;
+    border-color: red;
+}
