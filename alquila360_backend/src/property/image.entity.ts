@@ -1,24 +1,25 @@
 // src/property/image.entity.ts
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { Property } from './property.entity';
 
-@Entity('property_images')
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Property } from './property.entity'; 
+
+@Entity('images')
 export class Image {
-  @PrimaryGeneratedColumn()
-  id: number;
+    @PrimaryGeneratedColumn()
+    id: number;
 
-  // 🔗 Relación con la propiedad
-  @ManyToOne(() => Property, property => property.images)
-  @JoinColumn({ name: 'propertyId' }) // La columna FK en esta tabla
-  property: Property;
-  
-  @Column()
-  propertyId: number; // Columna de clave foránea explícita
+    // 🚨 VERIFICA QUE @Column ESTÉ PRESENTE AQUÍ
+    @Column({ length: 500 })
+    url: string; // URL donde se almacena la imagen
 
-  // 🖼️ URL real de la imagen almacenada en S3, GCS o tu servidor
-  @Column('text')
-  url: string; 
+    // 🚨 VERIFICA QUE @Column ESTÉ PRESENTE AQUÍ
+    @Column('int')
+    order: number; // Orden de la imagen (si lo estás usando)
 
-  @Column({ default: 0 })
-  order: number; // Para ordenar la visualización de las fotos
+    // ... (El resto de la relación)
+   @ManyToOne(() => Property, property => property.images) // ✅ Función de flecha y 'property.images'
+    property: Property;
+
+    @Column()
+    propertyId: number; 
 }
