@@ -9,10 +9,9 @@ export class UserController {
     }
 
     @Post()
-    createUser(@Body() user: User) {
-        return this.userService.createUser(user)
+    create(@Body() body: any) {
+    return this.userService.create(body);
     }
-
     @Get()
     getAllUsers() {
         return this.userService.getAllUsers();
