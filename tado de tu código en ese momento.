@@ -1,0 +1,13 @@
+[33mac77045[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mback-AronSanti[m[33m, [m[1;31morigin/back-AronSanti[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mac77045[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mback-AronSanti[m[33m, [m[1;31morigin/back-AronSanti[m[33m)[m HEAD@{1}: checkout: moving from 981e1439eae6444313893a31b6bc3906784761f6 to back-AronSanti
+[33m981e143[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/AndresTorrez-Backend[m[33m)[m HEAD@{2}: pull --rebase (start): checkout 981e1439eae6444313893a31b6bc3906784761f6
+[33m59acc73[m[33m ([m[1;32mmaster[m[33m)[m HEAD@{3}: commit: mis cambios locales
+[33meac48dd[m HEAD@{4}: checkout: moving from back-AronSanti to master
+[33mac77045[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mback-AronSanti[m[33m, [m[1;31morigin/back-AronSanti[m[33m)[m HEAD@{5}: checkout: moving from master to back-AronSanti
+[33meac48dd[m HEAD@{6}: checkout: moving from back-AronSanti to master
+[33mac77045[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mback-AronSanti[m[33m, [m[1;31morigin/back-AronSanti[m[33m)[m HEAD@{7}: commit: Actualización del backend
+[33m7fd292e[m HEAD@{8}: commit: back2
+[33m835c39c[m HEAD@{9}: commit: Avance primer tick
+[33meac48dd[m HEAD@{10}: checkout: moving from master to back-AronSanti
+[33meac48dd[m HEAD@{11}: commit: primer ticked
+[33m0ec967e[m HEAD@{12}: clone: from https://github.com/ha55an-priv/Alquila_360Oficial

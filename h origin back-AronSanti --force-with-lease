@@ -1,0 +1,171 @@
+[33mcommit 981e1439eae6444313893a31b6bc3906784761f6[m[33m ([m[1;36mHEAD[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;31morigin/AndresTorrez-Backend[m[33m)[m
+Author: Andres Torrez <andres.torrez.ulloa@gmail.com>
+Date:   Mon Nov 24 01:02:35 2025 -0400
+
+    avance backend tickets
+
+[33mcommit 9799d369454d7381d0d4751fe2bf084532af0fe3[m
+Author: NatalyAp02 <159487177+NatalyAp02@users.noreply.github.com>
+Date:   Sat Nov 22 19:24:26 2025 -0400
+
+    Delete alquila360_backend/test-images/descarga3.jpeg:Zone.Identifier
+
+[33mcommit 07eef7eea149bb3b3a7cbf8281056566c5318a62[m
+Author: NatalyAp02 <159487177+NatalyAp02@users.noreply.github.com>
+Date:   Sat Nov 22 19:24:17 2025 -0400
+
+    Delete alquila360_backend/test-images/descarga2.jpeg:Zone.Identifier
+
+[33mcommit b2e9c408880baf51c6f01176f4e1132530472851[m
+Author: NatalyAp02 <159487177+NatalyAp02@users.noreply.github.com>
+Date:   Sat Nov 22 19:24:05 2025 -0400
+
+    Delete alquila360_backend/test-images/descarga1.jpeg:Zone.Identifier
+
+[33mcommit 133084ab61b6680eff962a35ea4d0ad83e73b952[m[33m ([m[1;31morigin/LopezDavid-Backend[m[33m)[m
+Merge: 3fb69e8 34099ee
+Author: brayansejase-bot <brayan.sejas.e@ucb.edu.bo>
+Date:   Thu Nov 20 13:59:34 2025 -0400
+
+    Merge pull request #5 from ha55an-priv/BrayanSejasBackend
+    
+    Brayan sejas backend
+
+[33mcommit 34099eed511cd4aca4bce184fe1f0842726f80c2[m[33m ([m[1;31morigin/BrayanSejasBackend[m[33m)[m
+Merge: 23a97ac 3fb69e8
+Author: brayansejase-bot <brayan.sejas.e@ucb.edu.bo>
+Date:   Thu Nov 20 13:59:20 2025 -0400
+
+    Merge branch 'master' into BrayanSejasBackend
+
+[33mcommit 23a97ac8eba6f2b0941b8e28b52a888c5a08d8a1[m
+Author: Brayan <brayan.sejas.e@ucb.edu.bo>
+Date:   Thu Nov 20 13:55:01 2025 -0400
+
+    Ultimo commit
+
+[33mcommit 3fb69e827b515e9cb1f757d1ecaf988d57d80d56[m
+Merge: bcdb83f 9a26e62
+Author: foreveraron14 <aronsss1231@gmail.com>
+Date:   Thu Nov 20 13:33:04 2025 -0400
+
+    Merge pull request #4 from ha55an-priv/AronRD
+    
+    registro de viviendas error de porpertymodulets
+
+[33mcommit 9a26e62d693ea85b9b9ae10c976b67457e91f04f[m[33m ([m[1;31morigin/AronRD[m[33m)[m
+Author: Aron Fuentes <aronsss1231@gmail.com>
+Date:   Thu Nov 20 13:27:12 2025 -0400
+
+    registro de viviendas error de porpertymodulets
+
+[33mcommit ea2db3339208ef06fd86bf0ec7e4486e20d2c71c[m
+Author: Brayan <brayan.sejas.e@ucb.edu.bo>
+Date:   Wed Nov 19 13:32:52 2025 -0400
+
+    chore: Se remueven carpetas de compilación y dependencias del control de versiones.
+
+[33mcommit cdef578d6407754467228e6e6d92a2ce76f00832[m
+Author: Brayan <brayan.sejas.e@ucb.edu.bo>
+Date:   Wed Nov 19 00:26:48 2025 -0400
+
+    feat: Adicion de entidades segun ultimo script
+
+[33mcommit bcdb83fdc88cc9158f7715a5c68111422941f2fe[m
+Author: Nataly <nataly.antezana.p@ucb.edu.bo>
+Date:   Tue Nov 18 19:12:28 2025 -0400
+
+    Agregar archivos
+
+[33mcommit a4381696f72a5fe95bfc34c6618127f3e35fe364[m
+Merge: 195b3e0 5b124b4
+Author: jjuuaann0 <juan.garcia.l@ucb.edu.bo>
+Date:   Tue Nov 18 15:46:04 2025 -0400
+
+    Merge pull request #3 from ha55an-priv/JuanFrontEnd
+    
+    Juan front end prepucio
+
+[33mcommit 5b124b4dd6c881deab7f3e8f2efc740a291d44ec[m[33m ([m[1;31morigin/JuanFrontEnd[m[33m)[m
+Author: juan <juan.garcia.l@ucb.edu.bo>
+Date:   Tue Nov 18 15:39:41 2025 -0400
+
+    Landing page done
+
+[33mcommit 195b3e0a451e3635e6d4a7a73707cf9e29a6ac09[m
+Merge: 0ec967e 7fd292e
+Author: josesantiagovaragasvidal-pixel <josesantiagovaragasvidal@gmail.com>
+Date:   Tue Nov 18 15:05:06 2025 -0400
+
+    Merge pull request #2 from ha55an-priv/back-AronSanti
+    
+    Back aron santi
+
+[33mcommit 7fd292ec6dece5c93c6c09c105c5a79399f9bea2[m
+Author: root <root@MSI.localdomain>
+Date:   Tue Nov 18 15:04:08 2025 -0400
+
+    back2
+
+[33mcommit 835c39c7eff2373203cbb41d96621a90c9b25b14[m
+Author: root <root@MSI.localdomain>
+Date:   Tue Nov 18 14:42:05 2025 -0400
+
+    Avance primer tick
+
+[33mcommit eac48ddc2071e53890c0c70bba8de19557b2400e[m
+Author: root <root@MSI.localdomain>
+Date:   Mon Nov 17 23:58:21 2025 -0400
+
+    primer ticked
+
+[33mcommit 0ec967e32b13dd5b354072f1a29f5a5dcb3dca28[m
+Merge: 3d2854d 747716a
+Author: ha55an-priv <davidlopezolivares05@gmail.com>
+Date:   Thu Nov 13 15:40:20 2025 -0400
+
+    Merge pull request #1 from ha55an-priv/LopezDavid-Backend
+    
+    conexiones de db a backend
+
+[33mcommit 747716ac036fcb6d39de10537c88cb2a538f5be3[m
+Author: hassan <davidlopezolivares05@gmail.com>
+Date:   Thu Nov 13 15:38:41 2025 -0400
+
+    conexiones de db a backend
+
+[33mcommit 2485fe41dd7290b36382b5242ceb67a8f5fc1b09[m
+Author: juan <juan.garcia.l@ucb.edu.bo>
+Date:   Tue Nov 11 14:43:19 2025 -0400
+
+    pruebaaa
+
+[33mcommit 3d2854dd998841d4b0f10da7c92834d2dbcba758[m
+Author: juan <juan.garcia.l@ucb.edu.bo>
+Date:   Tue Nov 11 14:33:10 2025 -0400
+
+    preuba
+
+[33mcommit 61834709db7a1ac30e8dc019601ef529a60d0aba[m
+Author: Mauricio Quezada <mauriqb2@gmail.com>
+Date:   Tue Nov 4 15:24:33 2025 -0400
+
+    conectando backend y frontend
+
+[33mcommit 7c306889c6f7bd48ddd1ee309be241d281398dcb[m
+Author: Mauricio Quezada <mauriqb2@gmail.com>
+Date:   Tue Oct 21 15:30:15 2025 -0400
+
+    Agregando la conexion a la base de datos con typeorm y creadno la entidad usuario con sus funciones
+
+[33mcommit 3e2643bb1510bcc355bee829048572a0284e8dc9[m
+Author: Mauricio Quezada <mauriqb2@gmail.com>
+Date:   Thu Oct 16 15:37:24 2025 -0400
+
+    instanciando entorno
+
+[33mcommit 96ebd722090630e8614667cbc5bfe5420ff10d02[m
+Author: Mauricio Quezada <mauriqb2@gmail.com>
+Date:   Thu Oct 16 15:26:54 2025 -0400
+
+    first commit
