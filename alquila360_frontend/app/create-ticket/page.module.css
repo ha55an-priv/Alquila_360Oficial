@@ -1,0 +1,286 @@
+/* app/create-ticket/page.module.css (CÓDIGO COMPLETO Y ACTUALIZADO) */
+
+.pageContainer {
+  min-height: 100vh;
+  background-color: #fcf8f3; /* Color de fondo general de la página, similar al mockup */
+}
+
+.mainContent {
+  max-width: 1850px; /* Ancho máximo para centrar el formulario */
+  margin: 2.5rem auto; /* Ajusta el margen superior e inferior, centrado horizontalmente */
+  padding: 0 1rem; /* Padding horizontal para pantallas pequeñas */
+}
+
+.formCard {
+  background-color: #ffffff;
+  border-radius: 0.75rem; /* Bordes más redondeados */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06); /* Sombra suave */
+  padding: 2rem;
+  border: 1px solid #e5e7eb; /* Borde gris muy claro */
+  min-height: 680px;
+}
+
+.ticketLayout {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* Columna izquierda más pequeña, derecha más grande */
+  gap: 2rem; /* Espacio entre las columnas */
+
+  /* Media query para pantallas más pequeñas (columnas apiladas) */
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --- Columna Izquierda: Fotos y Prioridad --- */
+.leftColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.photoUploadBox {
+  height: 200px; /* Altura ajustada para el mockup */
+  background-color: #f3f4f6; /* Fondo gris muy claro */
+  border: 2px dashed #d1d5db; /* Borde punteado */
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  cursor: pointer; /* Indica que es clickeable */
+  transition: background-color 0.2s ease-in-out;
+}
+
+.photoUploadBox:hover {
+  background-color: #e5e7eb; /* Un gris un poco más oscuro al pasar el ratón */
+}
+
+.photoUploadText {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #6b7280; /* Texto gris */
+}
+
+.prioritySelection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.label {
+  font-size: 0.875rem; /* text-sm */
+  font-weight: 600; /* font-semibold */
+  color: #374151; /* gray-700 */
+}
+
+.priorityButtonsGroup {
+  display: flex;
+  gap: 1rem;
+}
+
+.priorityDot {
+  width: 180px; /* Más grandes */
+  height: 180px; /* Más grandes */
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid transparent; /* Borde transparente por defecto */
+  transition: border-color 0.15s ease-in-out, transform 0.1s;
+}
+
+.priorityDot:hover {
+  transform: scale(1.05);
+}
+
+.priorityDot.selectedPriority {
+  border-color: #374151; /* Borde gris oscuro para el seleccionado */
+  box-shadow: 0 0 0 2px white, 0 0 0 4px #374151; /* Efecto de doble borde */
+}
+
+/* Colores de Prioridad */
+.priorityDot.alta { background-color: #ef4444; } /* Rojo */
+.priorityDot.media { background-color: #f97316; } /* Naranja */
+.priorityDot.baja { background-color: #22c55e; } /* Verde */
+
+
+/* --- Columna Derecha: Información y Descripción --- */
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.infoFieldsGroup {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas para los campos de info */
+  gap: 1rem;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* Una columna en pantallas pequeñas */
+  }
+}
+
+.infoField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.infoLabel {
+  font-size: 0.75rem; /* text-xs */
+  font-weight: 500; /* font-medium */
+  color: #6b7280; /* gray-500 */
+  text-transform: uppercase;
+}
+
+.infoValue {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937; /* gray-800 */
+  padding: 0.5rem 0; /* Simular padding como si fuera un input */
+  border-bottom: 1px solid #e5e7eb; /* Borde inferior para separar */
+}
+
+.problemInput {
+  grid-column: span 1; /* Ocupa una columna */
+}
+/* Estilos para el input de texto genérico (Nombre del Problema) */
+.textInput {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db; /* gris-300 */
+  border-radius: 0.375rem; /* rounded-md */
+  font-size: 1rem;
+  color: #1f2937; /* gray-800 */
+  background-color: #ffffff;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.textInput::placeholder {
+  color: #9ca3af; /* gris-400 */
+}
+.textInput:focus {
+  border-color: #f59e0b; /* amber-500 */
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  outline: none;
+}
+
+
+.ticketNumberBox {
+  grid-column: span 1; /* Ocupa una columna */
+  background-color: #e5e7eb; /* Fondo gris claro */
+  padding: 1.5rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.125rem; /* text-lg */
+  font-weight: 700; /* font-bold */
+  color: #4b5563; /* gray-600 */
+  text-align: center;
+}
+
+.descriptionSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.descriptionTextarea {
+  min-height: 300px; /* Altura ajustada para el mockup */
+  resize: vertical;
+  padding: 1rem;
+  background-color: #fff8f0; /* Fondo crema muy suave */
+  border: 1px solid #fbd38d; /* Borde sutil naranja/amarillo */
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: #1f2937;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.descriptionTextarea::placeholder {
+  color: #d6a77d; /* Tono más oscuro del crema para el placeholder */
+}
+.descriptionTextarea:focus {
+  border-color: #f59e0b; /* amber-500 */
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.2);
+  outline: none;
+}
+
+
+/* --- Botones de Acción --- */
+.actionButtons {
+  display: flex;
+  justify-content: flex-end; /* Alinea los botones a la derecha */
+  gap: 1rem;
+  margin-top: 1rem; /* Espacio superior */
+}
+
+.actionButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  text-decoration: none; /* Para los Link que se hacen Button */
+  display: inline-flex; /* Asegura que el contenido del botón se alinee bien */
+  align-items: center;
+  justify-content: center;
+}
+
+.createTicketButton {
+  background-color: #1f2937; /* Gris oscuro */
+  color: white;
+}
+.createTicketButton:hover {
+  background-color: #374151; /* Gris más oscuro al pasar el ratón */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+}
+
+.viewTicketsButton {
+  background-color: #e5e7eb; /* Gris muy claro */
+  color: #374151; /* Texto gris oscuro */
+  border: 1px solid #d1d5db;
+}
+.viewTicketsButton:hover {
+  background-color: #d1d5db; /* Gris un poco más oscuro al pasar el ratón */
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+}
+
+/* --- Estilos del Dialog (Modal) --- */
+.dialogContent {
+  /* Puedes ajustar el padding y el tamaño máximo del modal aquí */
+  padding: 2.5rem;
+  border-radius: 0.75rem;
+  text-align: center;
+  /* Asegúrate de que las clases de shadcn/ui para el dialog no entren en conflicto */
+  /* Si el DialogContent no se ve bien, puede que necesites sobrescribir estilos de shadcn/ui */
+}
+
+.dialogTitle {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: 700; /* font-bold */
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.dialogActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.dialogButton {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 120px; /* Para que los botones tengan un tamaño similar */
+}
+
+.dialogOutlineButton {
+  background-color: transparent;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+.dialogOutlineButton:hover {
+  background-color: #f3f4f6;
+}
