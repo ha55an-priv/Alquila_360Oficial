@@ -1,34 +1,45 @@
 // src/property/property.controller.ts
-import { Controller, Post, Body, UseGuards, Req, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express'; // ⬅️ Importamos el interceptor
+
+import { 
+    Controller, 
+    Post, 
+    Body, 
+    UseInterceptors, 
+    UploadedFiles, 
+    BadRequestException, 
+    ValidationPipe 
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto'; 
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'; 
+import { Express } from 'express'; // ⬅️ Necesario para el tipado de Multer
 
 @Controller('properties')
 export class PropertyController {
-  constructor(private readonly propertyService: PropertyService) {}
+  constructor(private readonly propertyService: PropertyService) {}
 
-  @UseGuards(JwtAuthGuard)
-  @Post()
-  
-  @UseInterceptors(FilesInterceptor('images', 10, {
-    // Aquí puedes configurar opciones de Multer, como el límite de tamaño de archivo, etc.
-  }))
-  async create(
-    @Body() createPropertyDto: CreatePropertyDto,
-    @UploadedFiles() files: Express.Multer.File[], // ⬅️ Recibimos los archivos
-    @Req() req: any,
-  ) {
-    if (!files || files.length === 0) {
-      throw new BadRequestException('Se requiere al menos una imagen para la propiedad.');
-    }
+  // @UseGuards(JwtAuthGuard) // ⬅️ Mantenemos comentado
+  @Post()
+  @UseInterceptors(FilesInterceptor('images', 10, {
+    // Aquí puedes configurar opciones de Multer
+  }))
+  async create(
+    // 🛑 CORRECCIÓN CLAVE: Aplicar ValidationPipe con { transform: true }
+    // Esto fuerza la conversión de strings de form-data a los tipos definidos en el DTO (@Type)
+    @Body(new ValidationPipe({ transform: true })) createPropertyDto: CreatePropertyDto,
+    
+    // 🛠️ Usamos Array<...> para evitar problemas de tipado de TS
+    @UploadedFiles() files: Array<Express.Multer.File>, 
+    // @Req() req: any, // Ya no es necesario si solo usamos el ownerId de prueba
+  ) {
+    if (!files || files.length === 0) {
+      throw new BadRequestException('Se requiere al menos una imagen para la propiedad.');
+    }
 
-    const ownerId = req.user.userId; 
-    
-    // ⚠️ ATENCIÓN: Aquí, 'files' contiene los archivos. Necesitas enviarlos a un servicio de almacenamiento (AWS S3, etc.)
-    
-    // 2. Llamamos al servicio para guardar la propiedad y las imágenes
-    return this.propertyService.createWithImages(createPropertyDto, ownerId, files);
-  }
+    
+    const ownerIdDePrueba = 1; 
+    
+    return this.propertyService.createWithImages(createPropertyDto, ownerIdDePrueba, files);
+  }
 }
