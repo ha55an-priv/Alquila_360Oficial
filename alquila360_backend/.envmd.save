@@ -1,0 +1,8 @@
+    
+DB_HOST=localhost
+DB_PORT=3306
+DB_USERNAME=root
+DB_PASSWORD=123456789
+DB_NAME=alquila360
+JWT_SECRET=mi_secreto_ultra_seguro
+PORT=300
