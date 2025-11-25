@@ -9,12 +9,22 @@ export class Property {
   @PrimaryGeneratedColumn()
   id: number;
 
+<<<<<<< HEAD
+ 
+  @ManyToOne(() => User, { nullable: false })
+  @JoinColumn({ name: 'ownerId' })
+  owner: User;
+  
+  @Column()
+  ownerId: number; // Columna de clave foránea explícita
+=======
   @ManyToOne(() => User, user => user.properties)
   @JoinColumn({ name: 'ownerId' }) 
   owner: User;
   
   @Column()
   ownerId: number; 
+>>>>>>> origin/master
 
   // 📝 Información básica
   @Column({ length: 255 })

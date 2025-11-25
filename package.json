@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/ha55an-priv/Alquila_360Oficial#readme",
   "dependencies": {
+    "@nestjs/typeorm": "^11.0.0",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",

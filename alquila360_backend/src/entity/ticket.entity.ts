@@ -38,7 +38,7 @@ export class Ticket {
     estado: string | null; 
 
     @OneToMany(() => TicketPhoto, photo => photo.ticket, { cascade: true })
-    fotos?: TicketPhoto[];
+    fotos: TicketPhoto[];
 
     
     

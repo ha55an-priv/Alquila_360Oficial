@@ -13,14 +13,15 @@ import { Ticket } from "./entity/ticket.entity";
 import { Problema } from "./entity/problema.entity";
 import { Resena } from "./entity/resena.entity";
 import { PagoTecnico } from "./entity/pagoTecnico.entity";
+import { TicketPhoto } from "./entity/photo.entity";
 // Asegúrate de que las rutas sean correctas, ej: "./entity/User"
 
 const AppDataSource = new DataSource({
     type: "mysql",
-    host: "127.0.0.1",
+    host: "localhost",
     port: 3306,
     username: "alquila360_admin",
-    password: "123456789",
+    password: "10902218",
     database: "alquila360",
     
     // LISTAR TODAS LAS ENTIDADES CREADAS
@@ -34,6 +35,7 @@ const AppDataSource = new DataSource({
         MetodoPago, 
         PagoAlquiler, 
         Ticket, 
+        TicketPhoto,
         Problema, 
         Resena, 
         PagoTecnico

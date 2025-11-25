@@ -13,6 +13,27 @@ import { Property } from './property/property.entity'; // ✅ Importación de Pr
 import { Image } from './property/image.entity'; 
 
 @Module({
+<<<<<<< HEAD
+  imports: [
+    // 1. CONFIGURACIÓN DEL ENTORNO
+    ConfigModule.forRoot({
+      isGlobal: true, 
+      envFilePath: '.env', // Aún necesario para el S3Service (aunque lo usamos local)
+    }),
+    
+    // 2. CONFIGURACIÓN PRINCIPAL DE TYPEORM (SOLUCIÓN MANUAL DE EMERGENCIA)
+    TypeOrmModule.forRoot({
+      type: 'mysql', 
+      host: 'localhost',  
+      port: 3306,           
+      username: 'alquila360_admin',       
+      password: '10902218',   
+      database: 'alquila360', 
+      
+      autoLoadEntities: true, 
+      synchronize: true, 
+    }),
+=======
   imports: [
     // 1. CONFIGURACIÓN DEL ENTORNO
     ConfigModule.forRoot({
@@ -38,6 +59,7 @@ import { Image } from './property/image.entity';
       
       synchronize: true, 
     }),
+>>>>>>> origin/master
 
     // 3. Módulos de la Aplicación
     UserModule, 
