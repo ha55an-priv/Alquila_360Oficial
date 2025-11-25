@@ -1,0 +1,86 @@
+.pageContainer {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+}
+
+.pageTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.emptyMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+.propertyList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.propertyCard {
+  display: grid;
+  grid-template-columns: 150px 1fr 150px;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.imagePlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eee;
+  border-radius: 8px;
+  height: 120px;
+  font-weight: bold;
+  color: #666;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.propertyInfo p,
+.ratingSection p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.actionButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.viewButton,
+.editButton {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.viewButton {
+  background-color: #0070f3;
+  color: white;
+}
+
+.editButton {
+  background-color: #f5a623;
+  color: white;
+}

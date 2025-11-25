@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  padding: 2rem;
+  background: #fcf5ef;
+  height: 100vh;
+}
+
+/* Scroll principal */
+.scrollContainer {
+  width: 95%;
+  overflow-y: scroll;
+  padding-right: 1rem;
+}
+
+.scrollBar {
+  width: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.arrowUp,
+.arrowDown {
+  background: white;
+  padding: 0.5rem;
+  width: 35px;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 0.8rem;
+}
+
+.bar {
+  flex-grow: 1;
+  width: 35px;
+  background: #cfcfcf;
+  border-radius: 8px;
+  margin: 0.5rem 0;
+}
+
+/* --- TARJETAS --- */
+
+.ticketCard {
+  display: grid;
+  grid-template-columns: 220px 1fr 300px;
+  background: white;
+  margin-bottom: 1.5rem;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.ticketColor {
+  color: white;
+  font-weight: bold;
+  font-size: 1.6rem;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ticketInfo {
+  padding-left: 1rem;
+}
+
+.ticketLabel {
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.ticketProp {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.ticketTecnico {
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+
+/* --- CALIFICACIÓN --- */
+
+.ratingSection {
+  text-align: left;
+}
+
+.ratingTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.starsContainer {
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.starFilled {
+  color: #f6b918;
+}
+
+.starEmpty {
+  color: #ddd;
+}
+
+.viewBtn {
+  background: #5a5a5a;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+}

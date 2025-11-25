@@ -1,0 +1,62 @@
+.pageContainer {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 1rem 2rem;
+}
+
+.pageTitle {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #333;
+}
+
+.emptyMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #777;
+}
+
+.contractList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contractCard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.documentLabel {
+  font-weight: bold;
+  color: #0070f3;
+  font-size: 1rem;
+}
+
+.contractInfo p {
+  margin: 0.3rem 0;
+  font-size: 0.95rem;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.viewButton {
+  padding: 0.5rem 1rem;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}

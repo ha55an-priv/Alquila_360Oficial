@@ -60,19 +60,19 @@ const Navbar = () => {
 
       {/* 2. Barra de Enlaces de Navegación */}
       <div className={styles.navLinksBar}>
-        <Link href="/create-ticket" className={styles.navLink}>
+        <Link href="/Inquilino/create-ticket" className={styles.navLink}>
           CREAR TICKET
         </Link>
-        <Link href="/mis-tickets" className={`${styles.navLink} ${styles.activeLink}`}>
+        <Link href="/Inquilino/mis-tickets" className={`${styles.navLink} ${styles.activeLink}`}>
           MIS TICKET
         </Link>
-        <Link href="/mis-contratos" className={styles.navLink}>
+        <Link href="/Inquilino/mis-contratos" className={styles.navLink}>
           MIS CONTRATOS
         </Link>
-        <Link href="/pagos" className={styles.navLink}>
+        <Link href="/Inquilino/mis-pagos" className={styles.navLink}>
           PAGOS
         </Link>
-        <Link href="/perfil" className={styles.navLink}>
+        <Link href="/Inquilino/profile" className={styles.navLink}>
           PERFIL
         </Link>
       </div>
