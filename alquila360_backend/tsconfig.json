@@ -20,6 +20,26 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
-  }
+    "noFallthroughCasesInSwitch": false,
+    // tsconfig.json
+
+
+  
+    // ... otras opciones ...
+    
+    "paths": {
+      "@entity/*": [
+        "entity/*" // ⬅️ Define un alias @entity para la carpeta 'src/entity'
+      ],
+      "@user/*": [
+        "user/*" // ⬅️ Define un alias @user para la carpeta 'src/user'
+      ],
+      "@property/*": [
+        "property/*" // ⬅️ Define un alias @property para la carpeta 'src/property'
+      ]
+    }
+  
+}
+  
+  
 }
