@@ -1,0 +1,78 @@
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 3rem;
+  background-color: #fff7f2;
+}
+
+/* Panel izquierdo */
+.leftPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.avatar {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background-color: #cfcfcf;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>");
+  background-size: 70%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.roleText {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* Panel central */
+.centerPanel {
+  width: 380px;
+  background-color: #fff4ea;
+  padding: 2rem;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sectionTitle {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.detailsList {
+  line-height: 1.8rem;
+}
+
+/* Panel derecho */
+.rightPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.box {
+  background-color: #fff4ea;
+  padding: 2rem;
+  width: 320px;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.stars {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+/* Loader */
+.loading {
+  padding: 3rem;
+  font-size: 1.4rem;
+  text-align: center;
+}

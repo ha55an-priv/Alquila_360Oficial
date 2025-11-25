@@ -1,0 +1,121 @@
+.navbarContainer {
+  position: relative;
+  width: 100%;
+  background-image: url('/Prop360.jpg'); /* Ajusta según tu fondo */
+  background-size: cover;
+  background-position: center 40%;
+}
+
+.navbarContainer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.112); /* Opacidad */
+  z-index: 0;
+}
+
+.navbarTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.logoGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.brandLogo {
+  border-radius: 50%;
+}
+
+.logoText {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #fffefe;
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  width: 150px;
+}
+
+.searchIcon {
+  color: #666;
+}
+
+.searchClear {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.profileGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.profileIcon {
+  width: 32px;
+  height: 32px;
+  background-color: #ccc;
+  border-radius: 50%;
+}
+
+.profileText {
+  font-weight: 500;
+}
+
+.dropdownIcon {
+  color: #666;
+}
+
+.notificationIcon {
+  position: relative;
+}
+
+.notificationDot {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.navLinksBar {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 0.5rem 0;
+  background-color: #f5f5f539;
+  position: relative;
+  z-index: 1;
+}
+
+.navLink {
+  text-decoration: none;
+  color: #9d5e2a;
+  font-weight: 500;
+}
+
+.activeLink {
+  border-bottom: 2px solid #9d5e2a;
+}
