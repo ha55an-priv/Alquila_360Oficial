@@ -19,6 +19,7 @@ declare global {
         mimetype: string;
         size: number;
         buffer: Buffer; // El contenido del archivo
+        filename: string;
         // etc.
       }
     }

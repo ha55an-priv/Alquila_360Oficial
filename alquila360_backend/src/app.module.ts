@@ -19,11 +19,11 @@ import { PropertyModule } from './property/property.module';
     // 2. CONFIGURACIÓN PRINCIPAL DE TYPEORM (SOLUCIÓN MANUAL DE EMERGENCIA)
     TypeOrmModule.forRoot({
       type: 'mysql', 
-      host: 'localhost',      // ⬅️ Manualmente 'localhost'
-      port: 3306,             // ⬅️ Manualmente 3306
-      username: 'root',       // ⬅️ Manualmente 'root'
-      password: '12345678',   // ⬅️ Manualmente '12345678'
-      database: 'alquila360',  // ⬅️ Manualmente 'alquila360'
+      host: 'localhost',  
+      port: 3306,           
+      username: 'alquila360_admin',       
+      password: '10902218',   
+      database: 'alquila360', 
       
       autoLoadEntities: true, 
       synchronize: true, 
