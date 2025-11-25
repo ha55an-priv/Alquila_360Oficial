@@ -18,8 +18,8 @@ export class User {
     @Column({ length: 100 }) 
     name: string;
 
-    @Column({ type: "date" }) 
-    fecha_nacimiento: Date;
+    @Column({ name: 'fecha_nacimiento', type: 'date', nullable: true })
+fechaNacimiento: Date | null;
 
     @Column({ length: 100 }) 
     contrasena: string;

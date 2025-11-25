@@ -1,27 +1,57 @@
 import { Injectable } from "@nestjs/common";
-import AppDataSource from "src/data-source";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { User } from "src/entity/user.entity";
+import { Role } from "src/entity/rol.entity";
 
 @Injectable()
 export class UserService {
-    async createUser(user: User) { 
-        return await AppDataSource.getRepository(User).save(user);
-    }
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
 
-    async getAllUsers(){
-        return await AppDataSource.getRepository(User).find();
-    }
+    @InjectRepository(Role)
+    private readonly roleRepo: Repository<Role>,
+  ) {}
 
-    async getUserById(ci: number) {
-        return await AppDataSource.getRepository(User).findOneBy({ ci });
-    }
+  async create(dto: any) {
+    // buscar el rol (ej. dto.rol = 1)
+    const role = await this.roleRepo.findOne({
+      where: { idRol: dto.rol },
+    });
 
-    async updateUser(ci: number, userData: Partial<User>) {
-        await AppDataSource.getRepository(User).update(ci, userData);
-        return this.getUserById(ci);
-    }
+    // opcional: validar
+    // if (!role) throw new NotFoundException('Rol no encontrado');
 
-    async deleteUser(id: number) {
-        return await AppDataSource.getRepository(User).delete(id);
-    }
+    const user = this.userRepo.create({
+      ci: dto.ci,
+      name: dto.name,
+      contrasena: dto.password,
+      fechaNacimiento: dto.fechaNacimiento ?? null,
+      activacion: true,
+      roles: role ? [role] : [],
+    } as any); // cast para que TS no se queje por roles
+
+    return this.userRepo.save(user);
+  }
+
+  async getAllUsers() {
+    return this.userRepo.find({ relations: ["roles"] });
+  }
+
+  async getUserById(ci: number) {
+    return this.userRepo.findOne({
+      where: { ci },
+      relations: ["roles"],
+    });
+  }
+
+  async updateUser(ci: number, userData: Partial<User>) {
+    await this.userRepo.update(ci, userData);
+    return this.getUserById(ci);
+  }
+
+  async deleteUser(ci: number) {
+    return this.userRepo.delete(ci);
+  }
 }
