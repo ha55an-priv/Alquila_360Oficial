@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { Repository, In } from "typeorm";
 import { User } from "src/entity/user.entity";
 import { Role } from "src/entity/rol.entity";
 
@@ -15,22 +15,23 @@ export class UserService {
   ) {}
 
   async create(dto: any) {
-    // buscar el rol (ej. dto.rol = 1)
-    const role = await this.roleRepo.findOne({
-      where: { idRol: dto.rol },
-    });
+    // dto.roles viene como [1, 2, 3] etc.
+    let roles: Role[] = [];
 
-    // opcional: validar
-    // if (!role) throw new NotFoundException('Rol no encontrado');
+    if (Array.isArray(dto.roles) && dto.roles.length > 0) {
+      roles = await this.roleRepo.find({
+        where: { idRol: In(dto.roles) },
+      });
+    }
 
     const user = this.userRepo.create({
       ci: dto.ci,
       name: dto.name,
-      contrasena: dto.password,
+      contrasena: dto.contrasena,               // ← usa "contrasena" del body
       fechaNacimiento: dto.fechaNacimiento ?? null,
       activacion: true,
-      roles: role ? [role] : [],
-    } as any); // cast para que TS no se queje por roles
+      roles,
+    });
 
     return this.userRepo.save(user);
   }
