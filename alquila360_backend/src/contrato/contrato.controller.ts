@@ -1,3 +1,4 @@
+// src/contrato/contrato.controller.ts
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ContratoService } from './contrato.service';
 
@@ -5,7 +6,7 @@ import { ContratoService } from './contrato.service';
 export class ContratoController {
   constructor(private readonly contratoService: ContratoService) {}
 
-  // Crear contrato + generar cuotas
+  // Crear contrato + generar cuotas + marcar propiedad rentada
   @Post()
   create(@Body() dto: any) {
     return this.contratoService.create(dto);
@@ -27,5 +28,11 @@ export class ContratoController {
   @Post('pagos/:idPago/registrar')
   registrarPago(@Param('idPago') idPago: string, @Body() dto: any) {
     return this.contratoService.registrarPago(Number(idPago), dto);
+  }
+
+  // Cerrar contrato (marcar vencido + liberar propiedad)
+  @Post(':id/cerrar')
+  cerrar(@Param('id') id: string) {
+    return this.contratoService.cerrarContrato(Number(id));
   }
 }

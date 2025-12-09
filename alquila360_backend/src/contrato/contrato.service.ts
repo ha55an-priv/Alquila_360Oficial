@@ -1,3 +1,4 @@
+// src/contrato/contrato.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -10,6 +11,10 @@ import {
   EstadoCuota,
   PagoAlquiler,
 } from '../entity/pago_alquiler.entity';
+import {
+  Propiedad,
+  EstadoPropiedad,
+} from '../entity/propiedad.entity';
 
 @Injectable()
 export class ContratoService {
@@ -18,9 +23,13 @@ export class ContratoService {
     private contratoRepo: Repository<Contrato>,
     @InjectRepository(PagoAlquiler)
     private cuotaRepo: Repository<PagoAlquiler>,
+    @InjectRepository(Propiedad)
+    private propiedadRepo: Repository<Propiedad>,
   ) {}
 
-  // Crear contrato + generar cuotas automáticas
+  // ============================
+  // CREAR CONTRATO + GENERAR CUOTAS + MARCAR PROPIEDAD RENTADA
+  // ============================
   async create(dto: any) {
     const contrato = this.contratoRepo.create({
       idInquilino: dto.idInquilino,
@@ -31,7 +40,7 @@ export class ContratoService {
       precioMensual: dto.precioMensual,
       adelanto: dto.adelanto ?? null,
 
-      // Garantía = un mes de alquiler (puedes cambiarlo en dto si quieres)
+      // Garantía = un mes de alquiler (puedes sobreescribir vía dto.garantia)
       garantia: dto.garantia ?? dto.precioMensual,
 
       tipoMulta: dto.tipoMulta ?? TipoMulta.PORCENTAJE,
@@ -47,6 +56,12 @@ export class ContratoService {
       const cuotas = this.generarCuotasParaContrato(savedContrato);
       await this.cuotaRepo.save(cuotas);
     }
+
+    // Marcar propiedad como RENTADO
+    await this.actualizarEstadoPropiedad(
+      savedContrato.idPropiedad,
+      EstadoPropiedad.Rentado,
+    );
 
     return this.findOne(savedContrato.idContrato);
   }
@@ -66,7 +81,9 @@ export class ContratoService {
     return contrato;
   }
 
-  // Registrar pago de una cuota específica
+  // ============================
+  // REGISTRAR PAGO DE UNA CUOTA
+  // ============================
   async registrarPago(idPago: number, dto: any) {
     const cuota = await this.cuotaRepo.findOne({
       where: { idPago },
@@ -113,6 +130,43 @@ export class ContratoService {
   }
 
   // ============================
+  // CERRAR CONTRATO
+  // (marcar VENCIDO + cuotas pendientes VENCIDO + propiedad Libre)
+  // ============================
+  async cerrarContrato(idContrato: number) {
+    const contrato = await this.contratoRepo.findOne({
+      where: { idContrato },
+      relations: ['pagos'],
+    });
+    if (!contrato) throw new NotFoundException('Contrato no encontrado');
+
+    contrato.estado = EstadoContrato.VENCIDO;
+
+    // Si no tenía fechaFin, la ponemos ahora
+    if (!contrato.fechaFin) {
+      contrato.fechaFin = new Date();
+    }
+
+    // Marcar cuotas pendientes como VENCIDO
+    for (const cuota of contrato.pagos || []) {
+      if (cuota.estado === EstadoCuota.PENDIENTE) {
+        cuota.estado = EstadoCuota.VENCIDO;
+      }
+    }
+
+    await this.cuotaRepo.save(contrato.pagos || []);
+    await this.contratoRepo.save(contrato);
+
+    // Marcar propiedad como LIBRE
+    await this.actualizarEstadoPropiedad(
+      contrato.idPropiedad,
+      EstadoPropiedad.Libre,
+    );
+
+    return this.findOne(idContrato);
+  }
+
+  // ============================
   // Helpers internos
   // ============================
 
@@ -152,5 +206,17 @@ export class ContratoService {
     const d = new Date(date);
     d.setMonth(d.getMonth() + months);
     return d;
+  }
+
+  private async actualizarEstadoPropiedad(
+    idPropiedad: number,
+    estado: EstadoPropiedad,
+  ) {
+    const propiedad = await this.propiedadRepo.findOne({
+      where: { idPropiedad },
+    });
+    if (!propiedad) return;
+    propiedad.estado = estado;
+    await this.propiedadRepo.save(propiedad);
   }
 }
