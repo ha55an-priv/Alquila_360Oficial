@@ -12,7 +12,7 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { PropertyService } from './property.service';
 import { CreatePropertyDto } from './dto/create-property.dto'; 
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'; 
+//import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Express } from 'express'; // ⬅️ Necesario para el tipado de Multer
 
 @Controller('properties')

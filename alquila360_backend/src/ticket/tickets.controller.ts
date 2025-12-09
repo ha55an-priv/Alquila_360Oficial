@@ -124,4 +124,60 @@ export class TicketsController {
       idTecnico,
     );
   }
+    // ==============================
+  // ESTADÍSTICAS: TICKETS POR ESTADO
+  // ==============================
+  @Get('stats/status')
+  async statsByStatus() {
+    return this.ticketsService.getStatsByStatus();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: TICKETS POR PRIORIDAD
+  // ==============================
+  @Get('stats/priority')
+  async statsByPriority() {
+    return this.ticketsService.getStatsByPriority();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: TIEMPO PROMEDIO DE RESOLUCIÓN
+  // ==============================
+  @Get('stats/resolution-time')
+  async avgResolutionTime() {
+    return this.ticketsService.getAverageResolutionTime();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: TÉCNICOS MÁS ASIGNADOS
+  // ==============================
+  @Get('stats/top-tecnicos-asignados')
+  async topTecnicosAsignados() {
+    return this.ticketsService.getTopTechniciansByAssignedTickets();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: TÉCNICOS MÁS RÁPIDOS
+  // ==============================
+  @Get('stats/top-tecnicos-rapidos')
+  async topTecnicosRapidos() {
+    return this.ticketsService.getTopTechniciansByResolutionTime();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: PROPIEDADES CON MÁS TICKETS
+  // ==============================
+  @Get('stats/top-propiedades')
+  async topPropiedades() {
+    return this.ticketsService.getTopPropertiesByTickets();
+  }
+
+  // ==============================
+  // ESTADÍSTICAS: INQUILINOS CON MÁS REPORTES
+  // ==============================
+  @Get('stats/top-inquilinos')
+  async topInquilinos() {
+    return this.ticketsService.getTopInquilinosByTickets();
+  }
+
 }

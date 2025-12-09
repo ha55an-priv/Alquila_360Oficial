@@ -318,4 +318,152 @@ async getAverageRatingForTechnician(idTecnico: number) {
     }
     return t;
   }
+  // =====================================
+  // ESTADÍSTICAS: TICKETS POR ESTADO
+  // =====================================
+  async getStatsByStatus() {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .select('t.estado', 'estado')
+      .addSelect('COUNT(*)', 'total')
+      .groupBy('t.estado')
+      .getRawMany<{ estado: TicketStatus; total: string }>();
+
+    return rows.map((r) => ({
+      estado: r.estado,
+      total: Number(r.total),
+    }));
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: TICKETS POR PRIORIDAD
+  // =====================================
+  async getStatsByPriority() {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .select('t.prioridad', 'prioridad')
+      .addSelect('COUNT(*)', 'total')
+      .groupBy('t.prioridad')
+      .getRawMany<{ prioridad: string; total: string }>();
+
+    return rows.map((r) => ({
+      prioridad: r.prioridad,
+      total: Number(r.total),
+    }));
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: TIEMPO PROMEDIO DE RESOLUCIÓN (GLOBAL)
+  // =====================================
+  async getAverageResolutionTime() {
+    const qb = this.ticketRepo
+      .createQueryBuilder('t')
+      .where('t.fechaCierre IS NOT NULL')
+      .select(
+        'AVG(TIMESTAMPDIFF(HOUR, t.fechaReporte, t.fechaCierre))',
+        'avgHours',
+      );
+
+    const result = await qb.getRawOne<{ avgHours: string | null }>();
+    const avgHours =
+      result && result.avgHours !== null
+        ? parseFloat(result.avgHours)
+        : null;
+
+    if (avgHours === null || isNaN(avgHours)) {
+      return { avgHours: null, avgDays: null };
+    }
+
+    const avgDays = avgHours / 24;
+
+    return {
+      avgHours,
+      avgDays,
+    };
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: TÉCNICOS MÁS ASIGNADOS
+  // =====================================
+  async getTopTechniciansByAssignedTickets(limit = 5) {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .leftJoin('t.tecnicosAsignados', 'tec')
+      .select('tec.ci', 'idTecnico')
+      .addSelect('COUNT(t.idTicket)', 'totalTickets')
+      .where('tec.ci IS NOT NULL')
+      .groupBy('tec.ci')
+      .orderBy('totalTickets', 'DESC')
+      .limit(limit)
+      .getRawMany<{ idTecnico: number; totalTickets: string }>();
+
+    return rows.map((r) => ({
+      idTecnico: Number(r.idTecnico),
+      totalTickets: Number(r.totalTickets),
+    }));
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: TÉCNICOS MÁS RÁPIDOS (PROMEDIO HORAS)
+  // =====================================
+  async getTopTechniciansByResolutionTime(limit = 5) {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .leftJoin('t.tecnicosAsignados', 'tec')
+      .where('tec.ci IS NOT NULL')
+      .andWhere('t.fechaCierre IS NOT NULL')
+      .select('tec.ci', 'idTecnico')
+      .addSelect(
+        'AVG(TIMESTAMPDIFF(HOUR, t.fechaReporte, t.fechaCierre))',
+        'avgHours',
+      )
+      .groupBy('tec.ci')
+      .orderBy('avgHours', 'ASC')
+      .limit(limit)
+      .getRawMany<{ idTecnico: number; avgHours: string }>();
+
+    return rows.map((r) => ({
+      idTecnico: Number(r.idTecnico),
+      avgHours: parseFloat(r.avgHours),
+      avgDays: parseFloat(r.avgHours) / 24,
+    }));
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: PROPIEDADES CON MÁS TICKETS
+  // =====================================
+  async getTopPropertiesByTickets(limit = 5) {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .select('t.idPropiedad', 'idPropiedad')
+      .addSelect('COUNT(t.idTicket)', 'totalTickets')
+      .groupBy('t.idPropiedad')
+      .orderBy('totalTickets', 'DESC')
+      .limit(limit)
+      .getRawMany<{ idPropiedad: number; totalTickets: string }>();
+
+    return rows.map((r) => ({
+      idPropiedad: Number(r.idPropiedad),
+      totalTickets: Number(r.totalTickets),
+    }));
+  }
+
+  // =====================================
+  // ESTADÍSTICAS: INQUILINOS CON MÁS REPORTES
+  // =====================================
+  async getTopInquilinosByTickets(limit = 5) {
+    const rows = await this.ticketRepo
+      .createQueryBuilder('t')
+      .select('t.idInquilino', 'idInquilino')
+      .addSelect('COUNT(t.idTicket)', 'totalTickets')
+      .groupBy('t.idInquilino')
+      .orderBy('totalTickets', 'DESC')
+      .limit(limit)
+      .getRawMany<{ idInquilino: number; totalTickets: string }>();
+
+    return rows.map((r) => ({
+      idInquilino: Number(r.idInquilino),
+      totalTickets: Number(r.totalTickets),
+    }));
+  }
 }
