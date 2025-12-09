@@ -91,12 +91,27 @@ export default function Properties() {
           </button>
         </div>
 
+        {/* SUBMENÚ */}
         <div className={styles.headerSubMenu}>
-          <div className={styles.leftMenu}>NUEVA PROPIEDAD</div>
+          <div className={styles.leftMenu}>
+            <Link href="/newProperty" className={styles.noStyleLink}>
+              NUEVA PROPIEDAD
+            </Link>
+          </div>
+
           <div className={styles.rightMenu}>
-            <span>MIS PROPIEDADES</span>
-            <span>MIS CONTRATOS</span>
-            <span>PERFIL</span>
+            <Link href="/listProperty" className={styles.noStyleLink}>
+              MIS PROPIEDADES
+            </Link>
+
+            <Link href="/contractList" className={styles.noStyleLink}>
+              MIS CONTRATOS
+            </Link>
+
+            <Link href="/profile" className={styles.noStyleLink}>
+              PERFIL
+            </Link>
+
             <Bell className={styles.bellIcon} />
           </div>
         </div>
@@ -121,8 +136,8 @@ export default function Properties() {
               </div>
 
               <div className={styles.propertyButtonWrapper}>
-                <Link href="/viewProperty">
-                  <button className={styles.viewButton}>VER PROPIEDAD</button>
+                <Link href="/viewProperty" className={styles.viewButton}>
+                  VER PROPIEDAD
                 </Link>
               </div>
             </div>

@@ -19,6 +19,7 @@
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,0.2);
+  pointer-events: none; 
 }
 
 .headerContent {
@@ -223,4 +224,13 @@
 
 .bellIcon {
   cursor: pointer;
+}
+
+.noStyleLink {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  display: inline-block;
+  padding: 5px 10px;
 }

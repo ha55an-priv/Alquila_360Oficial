@@ -5,15 +5,6 @@ import { Search, X, ChevronDown, ChevronUp, Bell } from "lucide-react";
 import styles from "./styles.module.css";
 import Link from "next/link";
 
-// ...
-
-<div className={styles.propertyButtonWrapper}>
-  <Link href="/viewProperty">
-    <button className={styles.viewButton}>VER PROPIEDAD</button>
-  </Link>
-</div>
-
-
 interface Property {
   id: number;
   type: string;
@@ -57,7 +48,6 @@ const mockProperties: Property[] = [
 export default function Properties() {
   const [searchTerm, setSearchTerm] = useState("");
   const [showUserMenu, setShowUserMenu] = useState(false);
-
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
 
@@ -104,11 +94,16 @@ export default function Properties() {
         </div>
 
         <div className={styles.headerSubMenu}>
-          <div className={styles.leftMenu}>PROPIEDADES</div>
-          <div className={styles.rightMenu}>
-            <span>FAVORITOS</span>
-            <Bell className={styles.bellIcon} />
-          </div>
+          <Link href="/listProperty" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className={styles.leftMenu}>PROPIEDADES</div>
+          </Link>
+
+          <Link href="/contractList" style={{ textDecoration: "none", color: "inherit" }}>
+            <div className={styles.rightMenu}>
+              <span>CONTRATOS</span>
+              <Bell className={styles.bellIcon} />
+            </div>
+          </Link>
         </div>
       </header>
 
@@ -141,28 +136,28 @@ export default function Properties() {
             <li>Pando</li>
             <li>Chuquisaca</li>
           </ul>
-          
+
           {/* PRECIO MIN/MAX */}
           <div className={styles.propertiesFilterSection}>
             <h3 className={styles.propertiesFilterTitle}>PRECIO</h3>
             <p className={styles.propertiesPriceSubtitle}>Mínimo - Máximo</p>
 
-          <div className={styles.propertiesPriceInputs}>
-            <input
-              type="number"
-              placeholder="Mínimo"
-              className={styles.propertiesPriceInput}
-              value={minPrice}
-              onChange={(e) => setMinPrice(e.target.value)}
-            />
-            <input
-              type="number"
-              placeholder="Máximo"
-              className={styles.propertiesPriceInput}
-              value={maxPrice}
-              onChange={(e) => setMaxPrice(e.target.value)}
-            />
-          </div>
+            <div className={styles.propertiesPriceInputs}>
+              <input
+                type="number"
+                placeholder="Mínimo"
+                className={styles.propertiesPriceInput}
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+              <input
+                type="number"
+                placeholder="Máximo"
+                className={styles.propertiesPriceInput}
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+            </div>
           </div>
         </aside>
 
@@ -184,7 +179,7 @@ export default function Properties() {
 
               <div className={styles.propertyButtonWrapper}>
                 <Link href="/viewProperty">
-                <button className={styles.viewButton}>VER PROPIEDAD</button>
+                  <button className={styles.viewButton}>VER PROPIEDAD</button>
                 </Link>
               </div>
             </div>

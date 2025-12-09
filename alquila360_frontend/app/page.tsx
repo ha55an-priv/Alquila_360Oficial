@@ -145,26 +145,30 @@ export default function Home() {
           gap: "25px"
         }}>
           {mockPosts.map((p) => (
-            <div key={p.id} style={{
-              background: "#fff",
-              borderRadius: "16px",
-              overflow: "hidden",
-              boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
-              transition: "transform 0.2s, box-shadow 0.2s"
-            }}>
+            <Link key={p.id} href="/viewProperty" style={{ textDecoration: "none" }}>
               <div style={{
-                height: "150px",
-                backgroundImage: `url(${p.image})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center"
-              }}></div>
+                background: "#fff",
+                borderRadius: "16px",
+                overflow: "hidden",
+                boxShadow: "0 3px 10px rgba(0,0,0,0.08)",
+                transition: "transform 0.2s, box-shadow 0.2s",
+                cursor: "pointer",
+                color: "#000"  // <-- texto negro
+              }}>
+                <div style={{
+                  height: "150px",
+                  backgroundImage: `url(${p.image})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center"
+                }}></div>
 
-              <div style={{ padding: "15px", textAlign: "left" }}>
-                <h4 style={{ fontSize: "17px", fontWeight: 600, marginBottom: "5px" }}>{p.title}</h4>
-                <p style={{ fontSize: "14px", color: "#666", marginBottom: "8px" }}>Zona: {p.zona}</p>
-                <span style={{ fontWeight: "bold", color: "#008080", fontSize: "15px" }}>{p.price}</span>
+                <div style={{ padding: "15px", textAlign: "left", color: "#000" }}>
+                  <h4 style={{ fontSize: "17px", fontWeight: 600, marginBottom: "5px" }}>{p.title}</h4>
+                  <p style={{ fontSize: "14px", marginBottom: "8px" }}>Zona: {p.zona}</p>
+                  <span style={{ fontWeight: "bold", fontSize: "15px" }}>{p.price}</span>
+                </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>

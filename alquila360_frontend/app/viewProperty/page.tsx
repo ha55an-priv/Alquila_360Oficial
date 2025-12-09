@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Search, X, Bell } from "lucide-react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import Link from "next/link";
+import { Search, X, ChevronDown, ChevronUp, Bell } from "lucide-react";
 import styles from "./styles.module.css";
 
 interface Property {
@@ -15,140 +15,144 @@ interface Property {
   images: string[];
 }
 
-export default function PropertyDetailPage() {
+export default function ViewProperty() {
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const property: Property = {
     id: 1,
     type: "Departamento",
     name: "Departamento en zona céntrica",
     price: "Bs 1200",
-    description: "Hermoso departamento con 3 habitaciones, cocina equipada y balcón.",
+    description:
+      "Hermoso departamento con 3 habitaciones, cocina equipada y balcón.",
     location: "Calle Falsa 123",
     images: [
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80", 
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80", 
-      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80", 
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+      "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80",
     ],
   };
-       const [selectedImage, setSelectedImage] = useState<string>(property.images[0]);
-       const [searchValue, setSearchValue] = useState("");
-      const [showUserMenu, setShowUserMenu] = useState(false); 
+
+  const [selectedImage, setSelectedImage] = useState<string>(property.images[0]);
 
   return (
-    <div className={styles["property-detail-page"]}>
+    <div className={styles.page}>
       {/* HEADER */}
-      <header className={styles["property-detail-header"]}>
-        <div className={styles["property-detail-header-content"]}>
-          <div className={styles["property-detail-logo"]}>
+      <header className={styles.header}>
+        <div className={styles.headerOverlay} />
+
+        <div className={styles.headerContent}>
           <div className={styles.logo}>
-          <img src="/LOGO.png" alt="Logo" className={styles.logoImg} />
-          <span className={styles.logoText}>ALQUILA360</span>
+            <img src="/LOGO.png" alt="Logo" className={styles.logoImg} />
+            <span>ALQUILA360</span>
           </div>
 
-          </div>
-
-          <div className={styles.searchContainer}>
+          <div className={styles.searchBox}>
             <Search className={styles.searchIcon} />
             <input
-            type="text"
-            placeholder="Buscar propiedades..."
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            className={styles.searchInput}
-          />
-            {searchValue && (
+              type="text"
+              placeholder="Buscar propiedades..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            {searchTerm && (
               <button
-                onClick={() => setSearchValue("")}
-                className={styles.clearButton}
+                className={styles.clearBtn}
+                onClick={() => setSearchTerm("")}
               >
                 <X size={18} />
               </button>
-          )}
-        </div>
-
-          <div className={styles["property-detail-user-menu"]}>
-            <button className={styles["property-detail-user-button"]}>
-              <div className={styles["property-detail-user-avatar"]}></div>
-              <span className={styles["property-detail-user-text"]}>USUARIO</span>
-              {showUserMenu ? <ChevronUp /> : <ChevronDown />}
-            </button>
+            )}
           </div>
+
+          <button
+            className={styles.userBtn}
+            onClick={() => setShowUserMenu(!showUserMenu)}
+          >
+            <div className={styles.userAvatar}></div>
+            <span>USUARIO</span>
+            {showUserMenu ? <ChevronUp /> : <ChevronDown />}
+          </button>
         </div>
 
-        <div className={styles["property-detail-secondary-header"]}>
-          <button className={styles["property-detail-nav-link"]}>PROPIEDADES</button>
-          <button className={styles["property-detail-nav-link"]}>FAVORITOS</button>
-          <button className={styles["property-detail-notification-button"]}>
-            <Bell size={16} /> 
-          </button>
+        {/* SUBMENU */}
+        <div className={styles.headerSubMenu}>
+          <div className={styles.leftMenu}>
+            <Link href="/newProperty" className={styles.noStyleLink}>
+              NUEVA PROPIEDAD
+            </Link>
+          </div>
+
+          <div className={styles.rightMenu}>
+            <Link href="/listProperty" className={styles.noStyleLink}>
+              MIS PROPIEDADES
+            </Link>
+
+            <Link href="/contractList" className={styles.noStyleLink}>
+              MIS CONTRATOS
+            </Link>
+
+            <span>PERFIL</span>
+            <Bell className={styles.bellIcon} />
+          </div>
         </div>
       </header>
 
-      {/* MAIN CONTENT */}
-      <main className={styles["property-detail-main"]}>
-        <div className={styles["property-detail-container"]}>
-          {/* LEFT - GALLERY */}
-          <div className={styles["property-detail-gallery"]}>
-            <div className={styles["property-detail-thumbnails"]}>
-              {property.images.map((img) => (
+      {/* MAIN */}
+      <div className={styles.main}>
+        <div className={styles.propertyContainer}>
+          {/* GALERÍA */}
+          <div className={styles.gallery}>
+            <div className={styles.thumbnails}>
+              {property.images.map((img, i) => (
                 <div
-                  key={img}
-                  className={`${styles["property-detail-thumbnail"]} ${
-                    selectedImage === img ? styles.active : ""
+                  key={i}
+                  className={`${styles.thumbnail} ${
+                    selectedImage === img ? styles.activeThumb : ""
                   }`}
                   onClick={() => setSelectedImage(img)}
                 >
-                  <img src={img} alt="thumbnail" />
+                  <img src={img} />
                 </div>
               ))}
             </div>
 
-            <div className={styles["property-detail-main-image"]}>
-              <img src={selectedImage} alt="selected" />
+            <div className={styles.mainImage}>
+              <img src={selectedImage} />
             </div>
           </div>
 
-          {/* RIGHT - PROPERTY INFO */}
-          <div className={styles["property-detail-info"]}>
-            <div className={styles["property-detail-info-card"]}>
-              <span className={styles["property-detail-type"]}>{property.type}</span>
-              <h1 className={styles["property-detail-name"]}>{property.name}</h1>
-              <span className={styles["property-detail-price"]}>{property.price}</span>
-              <p className={styles["property-detail-description-text"]}>
-                {property.description}
-              </p>
-              <span className={styles["property-detail-location"]}>{property.location}</span>
+          {/* INFO */}
+          <div className={styles.infoCard}>
+            <span className={styles.type}>{property.type}</span>
+            <h1 className={styles.name}>{property.name}</h1>
+            <span className={styles.price}>{property.price}</span>
+            <p className={styles.description}>{property.description}</p>
+            <span className={styles.location}>{property.location}</span>
 
-              {/* ACTION BUTTONS */}
-              <div className={styles["property-detail-actions"]}>
-                <button className={styles["property-detail-contact-button"]}>
-                  Contactar
-                </button>
-                <button className={styles["property-detail-whatsapp-button"]}>
-                  WhatsApp
-                </button>
-              </div>
+            <div className={styles.actions}>
+              <button className={styles.contactBtn}>Contactar</button>
+              <button className={styles.whatsappBtn}>WhatsApp</button>
+            </div>
 
-              {/* OPINION FORM */}
-              <div className={styles["property-detail-opinion-section"]}>
-                <h3 className={styles["property-detail-opinion-title"]}>Deja tu opinión</h3>
-                <div className={styles["property-detail-opinion-form"]}>
-                  <div className={styles["property-detail-opinion-input-wrapper"]}>
-                    <Search className={styles["property-detail-opinion-icon"]} />
-                    <input
-                      type="text"
-                      placeholder="Escribe un comentario..."
-                      className={styles["property-detail-opinion-input"]}
-                    />
-                  </div>
-                  <button className={styles["property-detail-opinion-submit"]}>+</button>
+            {/* Opinión */}
+            <div className={styles.opinionSection}>
+              <h3>Deja tu opinión</h3>
+
+              <div className={styles.opinionForm}>
+                <div className={styles.opinionInputWrapper}>
+                  <Search className={styles.opinionIcon} />
+                  <input type="text" placeholder="Escribe un comentario..." />
                 </div>
+
+                <button className={styles.submitOpinion}>+</button>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
     </div>
   );
 }
