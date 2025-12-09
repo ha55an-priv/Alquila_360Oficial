@@ -8,6 +8,8 @@ import { UserModule } from './user/user.module';
 import { HController } from './h/h.controller';
 import { AuthModule } from './auth/auth.module';
 import { PropertyModule } from './property/property.module';
+import { TicketsModule } from './ticket/tickets.module';
+import { ContratoModule } from './contrato/contrato.module';
 
 // Entidades requeridas
 import { User } from './entity/user.entity';
@@ -42,6 +44,8 @@ import { RoleModule } from './role/role.module';
     AuthModule,
     PropertyModule,
     RoleModule,
+    TicketsModule,
+    ContratoModule,
   ],
 
   controllers: [AppController, HController],

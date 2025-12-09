@@ -1,0 +1,386 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ========================================================= */
+/* ===============   HEADER IGUAL QUE contractList  ========= */
+/* ========================================================= */
+
+.header {
+  height: 150px;
+  background-image: url("/ciudad.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.headerOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
+}
+
+.headerContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.logoImg {
+  width: 40px;
+  height: 40px;
+}
+
+/* BUSCADOR */
+.searchBox {
+  font-family: 'Poppins', sans-serif;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 30px;
+  height: 40px;
+  flex: 1;
+  max-width: 450px;
+}
+
+.searchBox input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding-left: 8px;
+  font-size: 14px;
+}
+
+.searchIcon {
+  color: #666;
+}
+
+.clearBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* USER */
+.userBtn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* SUBMENU */
+.headerSubMenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  margin-top: 10px;
+  color: white;
+}
+
+.leftMenu {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-weight: 500;
+}
+
+.bellIcon {
+  cursor: pointer;
+}
+
+.noStyleLink {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ========================================================= */
+/* ===============          MAIN LAYOUT          ============ */
+/* ========================================================= */
+
+.new-property-main {
+  flex: 1;
+  padding: 2rem;
+  background: #f7f3ef;
+}
+
+.new-property-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+/* =========================== */
+/* IZQUIERDA: GALERÍA & CONTACTO */
+/* =========================== */
+
+.new-property-left {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* SUBE FOTOS */
+.new-property-photo-upload {
+  background-color: #d0d0d0;
+  border-radius: 16px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  color: #ffffff !important; 
+}
+
+.new-property-photo-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  color: #ffffff !important; 
+}
+
+.new-property-upload-text {
+  color: #ffffff !important; 
+  letter-spacing: 0.1em;
+  font-family: 'Poppins', sans-serif; 
+  text-align: center; 
+  margin-top: 0.5rem; 
+}
+
+.new-property-upload-text {
+  color: #888;
+  letter-spacing: 0.1em;
+}
+
+/* Contador de fotos */
+.new-property-photos-preview {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+}
+
+.new-property-photos-count {
+  color: #333;
+  font-size: 0.875rem;
+}
+
+/* CONTACTO */
+.new-property-contact-section {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+.new-property-contact-title {
+  color: #2c2c2c;
+  margin-bottom: 1rem;
+  letter-spacing: 0.05em;
+}
+
+.new-property-contact-inputs {
+  display: flex;
+  gap: 1rem;
+}
+
+.new-property-contact-input {
+  flex: 1;
+  background-color: #e8e8e8;
+  border: none;
+  border-radius: 24px;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: background-color 0.2s;
+}
+
+/* =========================== */
+/* DERECHA: FORMULARIO */
+/* =========================== */
+
+.new-property-right {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-property-form {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.new-property-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.new-property-form-input,
+.new-property-form-select,
+.new-property-form-textarea {
+  background-color: #f5deb3;
+  border: none;
+  border-radius: 8px;
+  padding: 0.875rem 1rem;
+  outline: none;
+  color: #2c2c2c;
+  transition: background-color 0.2s;
+}
+
+/* Filas del formulario */
+.new-property-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* BOTÓN PUBLICAR */
+.new-property-submit-button {
+  background-color: #4a4a4a;
+  color: white;
+  border: none;
+  border-radius: 24px;
+  padding: 0.875rem 2rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  color: #ffffff !important;
+}
+
+/* =========================== */
+/* RESPONSIVE */
+/* =========================== */
+
+@media (max-width: 1024px) {
+  .new-property-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerContent {
+    flex-wrap: wrap;
+  }
+
+  .searchBox {
+    order: 3;
+    width: 100%;
+    max-width: none;
+  }
+
+  .headerSubMenu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .new-property-contact-inputs {
+    flex-direction: column;
+  }
+
+  .new-property-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .new-property-photo-upload {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 1rem;
+  }
+
+  .headerSubMenu {
+    padding: 0 1rem;
+  }
+
+  .userBtn span {
+    display: none;
+  }
+
+  .leftMenu {
+    font-size: 14px;
+  }
+}
+.normalWeight {
+  font-weight: 400 !important;
+}
+
+.new-property-main,
+.new-property-main * {
+  font-family: "Poppins", sans-serif !important;
+  color: #000000;
+}
+
+.new-property-main input::placeholder,
+.new-property-main textarea::placeholder,
+.new-property-main select {
+  font-family: "Poppins", sans-serif !important;
+  color: #727272;
+}
+
+.new-property-form-label,
+.new-property-form-select,
+.new-property-form-input,
+.new-property-form-textarea {
+  font-family: "Poppins", sans-serif !important;
+  color: #000000;
+}
+
+/* Quitar la flecha del select */
+.new-property-form-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none !important;
+}
+
+.new-property-upload-icon {
+  color: #ffffff; /* ícono blanco */
+  margin-bottom: 1rem;
+}
+

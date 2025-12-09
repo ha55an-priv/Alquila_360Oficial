@@ -1,0 +1,300 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+/* ========================================================= */
+/* ===============   HEADER IGUAL QUE contractList  ========= */
+/* ========================================================= */
+
+.page {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  height: 150px;
+  background-image: url("/ciudad.jpg");
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.headerOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  pointer-events: none;
+}
+
+.headerContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 40px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.logoImg {
+  width: 40px;
+  height: 40px;
+}
+
+/* BÚSQUEDA */
+.searchBox {
+  font-family: 'Poppins', sans-serif;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: 30px;
+  height: 40px;
+  flex: 1;
+  max-width: 450px;
+}
+
+.searchBox input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding-left: 8px;
+  font-size: 14px;
+}
+
+.searchIcon {
+  color: #666;
+}
+
+.clearBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* USER */
+.userBtn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border-radius: 50%;
+}
+
+.headerSubMenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;
+  margin-top: 10px;
+}
+
+.leftMenu {
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.rightMenu {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: white;
+  font-weight: 500;
+}
+
+.bellIcon {
+  cursor: pointer;
+}
+
+.noStyleLink {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ========================================================= */
+/* ===============          MAIN LAYOUT          ============ */
+/* ========================================================= */
+
+.main {
+  display: flex;
+  height: calc(100vh - 150px);
+  background: #f7f3ef;
+  overflow-y: auto;
+}
+
+.propertyContainer {
+  display: flex;
+  gap: 30px;
+  padding: 30px 40px;
+  flex-wrap: wrap; /* Permite que los elementos se muevan si no hay suficiente espacio */
+}
+
+/* GALERÍA */
+.gallery {
+  display: flex;
+  gap: 15px;
+}
+
+.thumbnails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.thumbnail {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.activeThumb {
+  border-color: #6b8691;
+}
+
+.mainImage {
+  width: 400px;
+  height: 350px; /* altura fija de referencia */
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mainImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* INFO CARD */
+.infoCard {
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  margin-bottom: 30px; /* mismo espacio abajo */
+}
+
+
+.type {
+  font-size: 14px;
+  color: #666;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.price {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.description {
+  font-size: 14px;
+  color: #444;
+}
+
+.location {
+  font-size: 14px;
+}
+
+/* BOTONES */
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.contactBtn {
+  background: #6b8691;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.whatsappBtn {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.userBtn span {
+  font-family: 'Poppins', sans-serif;
+}
+
+
+/* OPINIÓN */
+.opinionSection {
+  margin-top: 10px;
+}
+
+.opinionForm {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.opinionInputWrapper {
+  background: #f1f1f1;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 6px;
+  flex: 1;
+}
+
+.opinionInputWrapper input {
+  border: none;
+  background: none;
+  outline: none;
+  flex: 1;
+}
+
+.submitOpinion {
+  background: #6b8691;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
