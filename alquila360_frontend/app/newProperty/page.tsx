@@ -42,97 +42,72 @@ export default function NewProperty() {
   };
 
   return (
-    <div className={styles["new-property-page"]}>
-      <header className={styles["new-property-header"]}>
-        <div
-          className={styles["new-property-header-overlay"]}
-          style={{
-            backgroundImage:
-              "url(https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1920)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-        <div className={styles["new-property-header-content"]}>
-          <div
-            className={styles["new-property-logo"]}
-            onClick={() => router.push("/home")}
-            style={{ cursor: "pointer" }}
-          >
-            <span className={styles["new-property-logo-text"]}>ALQUILA360</span>
-            <div className={styles["new-property-logo-icon"]}>
-              <div className={styles["new-property-logo-bars"]}>
-                <div className={styles["new-property-logo-bar"]}></div>
-                <div className={styles["new-property-logo-bar"]}></div>
-                <div className={styles["new-property-logo-bar"]}></div>
-              </div>
-            </div>
+    <div className={styles.page} style={{ fontFamily: "Poppins, sans-serif" }}>
+      {/* HEADER */}
+      <header className={styles.header}>
+        <div className={styles.headerOverlay} />
+
+        <div className={styles.headerContent}>
+          <div className={styles.logo} onClick={() => router.push("/home")}>
+            <img src="/LOGO.png" alt="Logo" className={styles.logoImg} />
+            <span>ALQUILA360</span>
           </div>
 
-          <div className={styles["new-property-search-container"]}>
-            <Search className={styles["new-property-search-icon"]} />
+          <div className={styles.searchBox}>
+            <Search className={styles.searchIcon} />
             <input
               type="text"
-              placeholder="CERCADO"
-              className={styles["new-property-search-input"]}
+              placeholder="Buscar propiedades..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             {searchTerm && (
-              <button
-                className={styles["new-property-search-clear"]}
-                onClick={clearSearch}
-                aria-label="Limpiar búsqueda"
-              >
-                <X />
+              <button className={styles.clearBtn} onClick={clearSearch}>
+                <X size={18} />
               </button>
             )}
           </div>
 
-          <div className={styles["new-property-user-menu"]}>
-            <button
-              className={styles["new-property-user-button"]}
-              onClick={() => setShowUserMenu(!showUserMenu)}
-            >
-              <div className={styles["new-property-user-avatar"]}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <circle cx="12" cy="8" r="4" fill="currentColor" />
-                  <path
-                    d="M6 21c0-3.314 2.686-6 6-6s6 2.686 6 6"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                </svg>
-              </div>
-              <span className={styles["new-property-user-text"]}>PROPIETARIO</span>
-              {showUserMenu ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-            </button>
-          </div>
+          <button
+            className={styles.userBtn}
+            onClick={() => setShowUserMenu(!showUserMenu)}
+          >
+            <div className={styles.userAvatar}></div>
+            <span>PROPIETARIO</span>
+            {showUserMenu ? <ChevronUp /> : <ChevronDown />}
+          </button>
         </div>
 
-        <div className={styles["new-property-secondary-header"]}>
-          <div className={styles["new-property-nav-left"]}>
-            <button className={`${styles["new-property-nav-link"]} ${styles.active}`}>
+        {/* SUBMENU */}
+        <div className={styles.headerSubMenu}>
+          <div className={styles.leftMenu}>
+            <button className={`${styles.noStyleLink}`}>
               NUEVA PROPIEDAD
             </button>
+          </div>
+
+          <div className={styles.rightMenu}>
             <button
-              className={styles["new-property-nav-link"]}
-              onClick={() => router.push("/my-properties")}
+              className={styles.noStyleLink}
+              onClick={() => router.push("/listProperty")}
             >
               MIS PROPIEDADES
             </button>
-          </div>
-          <div className={styles["new-property-favorites"]}>
-            <button className={styles["new-property-nav-link"]}>MIS CONTRATOS</button>
-            <button className={styles["new-property-nav-link"]}>FAVORITOS</button>
-            <button className={styles["new-property-notification-button"]}>
-              <Bell size={18} />
-              <ChevronDown size={16} />
+
+            <button
+              className={styles.noStyleLink}
+              onClick={() => router.push("/contractList")}
+            >
+              MIS CONTRATOS
             </button>
+
+            <span>PERFIL</span>
+            <Bell className={styles.bellIcon} />
           </div>
         </div>
       </header>
 
+      {/* MAIN */}
       <div className={styles["new-property-main"]}>
         <div className={styles["new-property-container"]}>
           <div className={styles["new-property-left"]}>
@@ -145,8 +120,11 @@ export default function NewProperty() {
                 onChange={handleFileUpload}
                 style={{ display: "none" }}
               />
-              <label htmlFor="photo-upload" className={styles["new-property-photo-label"]}>
-                <Upload size={48} className={styles["new-property-upload-icon"]} />
+              <label
+                htmlFor="photo-upload"
+                className={styles["new-property-photo-label"]}
+              >
+               <Upload size={48} color="#ffffff" className={styles["new-property-upload-icon"]} />
                 <p className={styles["new-property-upload-text"]}>AÑADIR FOTOS...</p>
               </label>
               {fotos.length > 0 && (
@@ -194,7 +172,9 @@ export default function NewProperty() {
               </div>
 
               <div className={styles["new-property-form-group"]}>
-                <label className={styles["new-property-form-label"]}>TIPO DE PROPIEDAD</label>
+                <label className={styles["new-property-form-label"]}>
+                  TIPO DE PROPIEDAD
+                </label>
                 <div className={styles["new-property-select-wrapper"]}>
                   <select
                     className={styles["new-property-form-select"]}
@@ -202,7 +182,7 @@ export default function NewProperty() {
                     onChange={(e) => setTipoPropiedad(e.target.value)}
                     required
                   >
-                    <option value="">Seleccione el tipo</option>
+                    <option value="">Seleccione</option>
                     <option value="casa">Casa</option>
                     <option value="departamento">Departamento</option>
                     <option value="local">Local</option>
@@ -210,7 +190,6 @@ export default function NewProperty() {
                     <option value="oficina">Oficina</option>
                     <option value="otro">Otro</option>
                   </select>
-                  <ChevronDown className={styles["new-property-select-icon"]} />
                 </div>
               </div>
 

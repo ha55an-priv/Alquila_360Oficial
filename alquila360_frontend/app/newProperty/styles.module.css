@@ -1,206 +1,138 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-/* ===========================
-   HEADER CON FONDO OSCURO
-   =========================== */
+/* ========================================================= */
+/* ===============   HEADER IGUAL QUE contractList  ========= */
+/* ========================================================= */
 
-.new-property-header {
-  background-color: #2c2c2c;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.header {
+  height: 150px;
+  background-image: url("/ciudad.jpg");
+  background-size: cover;
+  background-position: center;
   position: relative;
 }
 
-.new-property-header-overlay {
+.headerOverlay {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 0;
+  inset: 0;
+  background: rgba(0,0,0,0.25);
+  pointer-events: none;
 }
 
-.new-property-header-content {
+.headerContent {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  gap: 2rem;
+  gap: 20px;
+  padding: 25px 40px;
 }
 
-/* Logo */
-.new-property-logo {
+.logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex-shrink: 0;
+  gap: 10px;
+  color: white;
+  font-size: 22px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
-.new-property-logo-text {
-  color: #ffffff;
-  letter-spacing: 0.1em;
+.logoImg {
+  width: 40px;
+  height: 40px;
 }
 
-.new-property-logo-icon {
-  width: 32px;
-  height: 32px;
-  background-color: #f5deb3;
-  border-radius: 4px;
+/* BUSCADOR */
+.searchBox {
+  font-family: 'Poppins', sans-serif;
+  background: white;
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 6px;
-}
-
-.new-property-logo-bars {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  width: 100%;
-}
-
-.new-property-logo-bar {
-  height: 3px;
-  background-color: #333;
-  border-radius: 1px;
-}
-
-/* Search Bar */
-.new-property-search-container {
+  padding: 0 12px;
+  border-radius: 30px;
+  height: 40px;
   flex: 1;
-  max-width: 600px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  background-color: #ffffff;
-  border-radius: 24px;
-  padding: 0.5rem 1rem;
+  max-width: 450px;
 }
 
-.new-property-search-icon {
-  color: #666;
-  width: 20px;
-  height: 20px;
-  margin-right: 0.5rem;
-}
-
-.new-property-search-input {
+.searchBox input {
   flex: 1;
   border: none;
   outline: none;
-  background: transparent;
-  color: #999;
+  padding-left: 8px;
+  font-size: 14px;
 }
 
-.new-property-search-clear {
-  background: none;
-  border: none;
+.searchIcon {
   color: #666;
-  cursor: pointer;
-  padding: 0.25rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.new-property-search-clear:hover {
-  color: #333;
-}
-
-/* User Menu - PROPIETARIO */
-.new-property-user-menu {
-  position: relative;
-  flex-shrink: 0;
-}
-
-.new-property-user-button {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+.clearBtn {
   background: none;
   border: none;
-  color: #ffffff;
   cursor: pointer;
-  padding: 0.5rem;
 }
 
-.new-property-user-avatar {
+/* USER */
+.userBtn {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+  background: none;
+  border: none;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.userAvatar {
   width: 32px;
   height: 32px;
-  background-color: #ffffff;
+  background: white;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #333;
 }
 
-.new-property-user-text {
-  letter-spacing: 0.05em;
-}
-
-/* Secondary Header - Menú de Propietario */
-.new-property-secondary-header {
-  position: relative;
-  z-index: 1;
+/* SUBMENU */
+.headerSubMenu {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 2rem;
-  background-color: rgba(0, 0, 0, 0.4);
+  padding: 0 40px;
+  margin-top: 10px;
+  color: white;
 }
 
-.new-property-nav-left {
-  display: flex;
-  gap: 1rem;
+.leftMenu {
+  font-size: 16px;
+  font-weight: 500;
 }
 
-.new-property-nav-link {
-  background: none;
-  border: none;
-  color: #ffffff;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-  padding: 0.25rem 0.5rem;
-  transition: all 0.2s;
-}
-
-.new-property-nav-link:hover {
-  text-decoration: underline;
-}
-
-.new-property-nav-link.active {
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-}
-
-.new-property-favorites {
+.rightMenu {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 15px;
+  font-weight: 500;
 }
 
-.new-property-notification-button {
-  background-color: #ffffff;
-  border: none;
-  border-radius: 20px;
-  padding: 0.25rem 0.75rem;
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
+.bellIcon {
   cursor: pointer;
-  color: #333;
 }
 
-/* ===========================
-   MAIN CONTENT
-   =========================== */
+.noStyleLink {
+  all: unset;
+  cursor: pointer;
+}
+
+/* ========================================================= */
+/* ===============          MAIN LAYOUT          ============ */
+/* ========================================================= */
 
 .new-property-main {
   flex: 1;
   padding: 2rem;
+  background: #f7f3ef;
 }
 
 .new-property-container {
@@ -211,9 +143,9 @@
   gap: 2rem;
 }
 
-/* ===========================
-   SECCIÓN IZQUIERDA - FOTOS Y CONTACTO
-   =========================== */
+/* =========================== */
+/* IZQUIERDA: GALERÍA & CONTACTO */
+/* =========================== */
 
 .new-property-left {
   display: flex;
@@ -221,7 +153,7 @@
   gap: 1.5rem;
 }
 
-/* Photo Upload */
+/* SUBE FOTOS */
 .new-property-photo-upload {
   background-color: #d0d0d0;
   border-radius: 16px;
@@ -231,22 +163,26 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  color: #ffffff !important; 
 }
 
 .new-property-photo-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
   cursor: pointer;
-  padding: 3rem;
   width: 100%;
   height: 100%;
+  color: #ffffff !important; 
 }
 
-.new-property-upload-icon {
-  color: #888;
-  margin-bottom: 1rem;
+.new-property-upload-text {
+  color: #ffffff !important; 
+  letter-spacing: 0.1em;
+  font-family: 'Poppins', sans-serif; 
+  text-align: center; 
+  margin-top: 0.5rem; 
 }
 
 .new-property-upload-text {
@@ -254,6 +190,7 @@
   letter-spacing: 0.1em;
 }
 
+/* Contador de fotos */
 .new-property-photos-preview {
   position: absolute;
   bottom: 1rem;
@@ -269,7 +206,7 @@
   font-size: 0.875rem;
 }
 
-/* Contact Section */
+/* CONTACTO */
 .new-property-contact-section {
   background-color: #ffffff;
   border-radius: 16px;
@@ -297,17 +234,9 @@
   transition: background-color 0.2s;
 }
 
-.new-property-contact-input:focus {
-  background-color: #d8d8d8;
-}
-
-.new-property-contact-input::placeholder {
-  color: #999;
-}
-
-/* ===========================
-   SECCIÓN DERECHA - FORMULARIO
-   =========================== */
+/* =========================== */
+/* DERECHA: FORMULARIO */
+/* =========================== */
 
 .new-property-right {
   display: flex;
@@ -329,61 +258,8 @@
   gap: 0.5rem;
 }
 
-.new-property-form-label {
-  color: #2c2c2c;
-  letter-spacing: 0.05em;
-}
-
-.new-property-form-input {
-  background-color: #f5deb3;
-  border: none;
-  border-radius: 8px;
-  padding: 0.875rem 1rem;
-  outline: none;
-  color: #2c2c2c;
-  transition: background-color 0.2s;
-}
-
-.new-property-form-input:focus {
-  background-color: #f0d9a8;
-}
-
-.new-property-form-input::placeholder {
-  color: #999;
-}
-
-/* Select Wrapper */
-.new-property-select-wrapper {
-  position: relative;
-}
-
-.new-property-form-select {
-  width: 100%;
-  background-color: #f5deb3;
-  border: none;
-  border-radius: 8px;
-  padding: 0.875rem 2.5rem 0.875rem 1rem;
-  outline: none;
-  color: #2c2c2c;
-  appearance: none;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.new-property-form-select:focus {
-  background-color: #f0d9a8;
-}
-
-.new-property-select-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #666;
-  pointer-events: none;
-}
-
-/* Textarea */
+.new-property-form-input,
+.new-property-form-select,
 .new-property-form-textarea {
   background-color: #f5deb3;
   border: none;
@@ -391,50 +267,31 @@
   padding: 0.875rem 1rem;
   outline: none;
   color: #2c2c2c;
-  resize: vertical;
   transition: background-color 0.2s;
-  font-family: inherit;
 }
 
-.new-property-form-textarea:focus {
-  background-color: #f0d9a8;
-}
-
-.new-property-form-textarea::placeholder {
-  color: #999;
-}
-
-/* Form Row - Precio y CI */
+/* Filas del formulario */
 .new-property-form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
 
-/* Botón Publicar */
+/* BOTÓN PUBLICAR */
 .new-property-submit-button {
   background-color: #4a4a4a;
-  color: #ffffff;
+  color: white;
   border: none;
   border-radius: 24px;
   padding: 0.875rem 2rem;
-  letter-spacing: 0.1em;
   cursor: pointer;
-  transition: background-color 0.2s, transform 0.1s;
   margin-top: 1rem;
+  color: #ffffff !important;
 }
 
-.new-property-submit-button:hover {
-  background-color: #333;
-}
-
-.new-property-submit-button:active {
-  transform: scale(0.98);
-}
-
-/* ===========================
-   RESPONSIVE STYLES
-   =========================== */
+/* =========================== */
+/* RESPONSIVE */
+/* =========================== */
 
 @media (max-width: 1024px) {
   .new-property-container {
@@ -443,25 +300,20 @@
 }
 
 @media (max-width: 768px) {
-  .new-property-main {
-    padding: 1rem;
-  }
-
-  .new-property-header-content {
+  .headerContent {
     flex-wrap: wrap;
-    gap: 1rem;
   }
 
-  .new-property-search-container {
+  .searchBox {
     order: 3;
     width: 100%;
     max-width: none;
   }
 
-  .new-property-secondary-header {
+  .headerSubMenu {
     flex-direction: column;
-    gap: 0.5rem;
     align-items: flex-start;
+    gap: 5px;
   }
 
   .new-property-contact-inputs {
@@ -478,24 +330,57 @@
 }
 
 @media (max-width: 480px) {
-  .new-property-header-content {
+  .headerContent {
     padding: 1rem;
   }
 
-  .new-property-secondary-header {
-    padding: 0.5rem 1rem;
+  .headerSubMenu {
+    padding: 0 1rem;
   }
 
-  .new-property-form {
-    padding: 1.5rem;
-  }
-
-  .new-property-user-text {
+  .userBtn span {
     display: none;
   }
 
-  .new-property-nav-left {
-    flex-direction: column;
-    gap: 0.25rem;
+  .leftMenu {
+    font-size: 14px;
   }
 }
+.normalWeight {
+  font-weight: 400 !important;
+}
+
+.new-property-main,
+.new-property-main * {
+  font-family: "Poppins", sans-serif !important;
+  color: #000000;
+}
+
+.new-property-main input::placeholder,
+.new-property-main textarea::placeholder,
+.new-property-main select {
+  font-family: "Poppins", sans-serif !important;
+  color: #727272;
+}
+
+.new-property-form-label,
+.new-property-form-select,
+.new-property-form-input,
+.new-property-form-textarea {
+  font-family: "Poppins", sans-serif !important;
+  color: #000000;
+}
+
+/* Quitar la flecha del select */
+.new-property-form-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none !important;
+}
+
+.new-property-upload-icon {
+  color: #ffffff; /* ícono blanco */
+  margin-bottom: 1rem;
+}
+
