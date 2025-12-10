@@ -136,7 +136,7 @@ export default function Properties() {
               </div>
 
               <div className={styles.propertyButtonWrapper}>
-                <Link href="/viewProperty">
+                <Link href="/viewContract">
                   <button className={styles.viewButton}>VER CONTRATO</button>
                 </Link>
               </div>
