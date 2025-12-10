@@ -4,6 +4,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
+import AuthService from "../services/auth.service";
 
 const poppins = Poppins({
   subsets: ["latin"],

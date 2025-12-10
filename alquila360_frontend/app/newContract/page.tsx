@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X, Bell, ChevronDown, ChevronUp, Upload } from "lucide-react";
 import styles from "./styles.module.css";
+import ContrService from "../services/contr.service";
 
 export default function newContract() {
   const router = useRouter();
