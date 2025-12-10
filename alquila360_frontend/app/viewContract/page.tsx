@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { Search, X, ChevronDown, ChevronUp, Bell } from "lucide-react";
 import styles from "./styles.module.css";
+import ContrService from "../services/contr.service";
 
 interface Contract {
   id: number;

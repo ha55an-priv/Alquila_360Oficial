@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Search, X, ChevronDown, ChevronUp, Bell } from "lucide-react";
 import styles from "./styles.module.css";
 import Link from "next/link";
+import PropService from "../services/prop.service";
 
 interface Property {
   id: number;

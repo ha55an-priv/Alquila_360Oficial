@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X, Bell, ChevronDown, ChevronUp, Upload } from "lucide-react";
 import styles from "./styles.module.css";
+import PropService from "../services/prop.service";
 
 export default function NewProperty() {
   const router = useRouter();
