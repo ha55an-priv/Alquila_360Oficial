@@ -20,6 +20,9 @@ export default function newContract() {
   const [nombrePropietario, setNombrePropietario] = useState("");
   const [documentos, setDocumentos] = useState<File[]>([]);
 
+  // 🔹 Estado del modal
+  const [showModal, setShowModal] = useState(false);
+
   const clearSearch = () => setSearchTerm("");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,8 +31,9 @@ export default function newContract() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Creando contrato:", {
       inicioContrato,
       finContrato,
@@ -40,6 +44,9 @@ export default function newContract() {
       nombrePropietario,
       documentos: documentos.length,
     });
+
+    // 🔹 Aquí mostrará el modal
+    setShowModal(true);
   };
 
   return (
@@ -132,6 +139,7 @@ export default function newContract() {
                   AÑADIR DOCUMENTOS...
                 </p>
               </label>
+
               {documentos.length > 0 && (
                 <div className={styles["new-contract-photos-preview"]}>
                   <p className={styles["new-contract-photos-count"]}>
@@ -254,6 +262,21 @@ export default function newContract() {
           </div>
         </div>
       </div>
+
+      {/* 🔹 MODAL */}
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Contrato creado exitosamente</h2>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowModal(false)}
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
