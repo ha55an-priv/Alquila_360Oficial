@@ -20,6 +20,9 @@ export default function NewProperty() {
   const [contacto2, setContacto2] = useState("");
   const [fotos, setFotos] = useState<File[]>([]);
 
+  /* NUEVO → estado del modal */
+  const [showModal, setShowModal] = useState(false);
+
   const clearSearch = () => setSearchTerm("");
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,6 +33,7 @@ export default function NewProperty() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
     console.log("Publicando propiedad:", {
       ubicacion,
       tipoPropiedad,
@@ -40,6 +44,9 @@ export default function NewProperty() {
       contacto2,
       fotos: fotos.length,
     });
+
+    /* NUEVO → abrir modal */
+    setShowModal(true);
   };
 
   return (
@@ -125,8 +132,14 @@ export default function NewProperty() {
                 htmlFor="photo-upload"
                 className={styles["new-property-photo-label"]}
               >
-               <Upload size={48} color="#ffffff" className={styles["new-property-upload-icon"]} />
-                <p className={styles["new-property-upload-text"]}>AÑADIR FOTOS...</p>
+                <Upload
+                  size={48}
+                  color="#ffffff"
+                  className={styles["new-property-upload-icon"]}
+                />
+                <p className={styles["new-property-upload-text"]}>
+                  AÑADIR FOTOS...
+                </p>
               </label>
               {fotos.length > 0 && (
                 <div className={styles["new-property-photos-preview"]}>
@@ -161,7 +174,9 @@ export default function NewProperty() {
           <div className={styles["new-property-right"]}>
             <form onSubmit={handleSubmit} className={styles["new-property-form"]}>
               <div className={styles["new-property-form-group"]}>
-                <label className={styles["new-property-form-label"]}>UBICACIÓN</label>
+                <label className={styles["new-property-form-label"]}>
+                  UBICACIÓN
+                </label>
                 <input
                   type="text"
                   className={styles["new-property-form-input"]}
@@ -195,7 +210,9 @@ export default function NewProperty() {
               </div>
 
               <div className={styles["new-property-form-group"]}>
-                <label className={styles["new-property-form-label"]}>DESCRIPCIÓN</label>
+                <label className={styles["new-property-form-label"]}>
+                  DESCRIPCIÓN
+                </label>
                 <textarea
                   className={styles["new-property-form-textarea"]}
                   placeholder="Ingrese la descripción de la propiedad"
@@ -208,7 +225,9 @@ export default function NewProperty() {
 
               <div className={styles["new-property-form-row"]}>
                 <div className={styles["new-property-form-group"]}>
-                  <label className={styles["new-property-form-label"]}>PRECIO</label>
+                  <label className={styles["new-property-form-label"]}>
+                    PRECIO
+                  </label>
                   <input
                     type="number"
                     className={styles["new-property-form-input"]}
@@ -231,13 +250,32 @@ export default function NewProperty() {
                 </div>
               </div>
 
-              <button type="submit" className={styles["new-property-submit-button"]}>
+              <button
+                type="submit"
+                className={styles["new-property-submit-button"]}
+              >
                 PUBLICAR
               </button>
             </form>
           </div>
         </div>
       </div>
+
+      {/* 🚨 NUEVO → MODAL AL PUBLICAR 🚨 */}
+      {showModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Propiedad publicada correctamente</h2>
+
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowModal(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
