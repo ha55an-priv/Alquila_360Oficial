@@ -20,6 +20,10 @@ export default function ViewProperty() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  const [showCommentModal, setShowCommentModal] = useState(false);
+  const [showContactModal, setShowContactModal] = useState(false);
+  const [showWhatsModal, setShowWhatsModal] = useState(false);
+
   const property: Property = {
     id: 1,
     type: "Departamento",
@@ -134,8 +138,19 @@ export default function ViewProperty() {
             <span className={styles.location}>{property.location}</span>
 
             <div className={styles.actions}>
-              <button className={styles.contactBtn}>Contactar</button>
-              <button className={styles.whatsappBtn}>WhatsApp</button>
+              <button
+                className={styles.contactBtn}
+                onClick={() => setShowContactModal(true)}
+              >
+                Contactar
+              </button>
+
+              <button
+                className={styles.whatsappBtn}
+                onClick={() => setShowWhatsModal(true)}
+              >
+                WhatsApp
+              </button>
             </div>
 
             {/* Opinión */}
@@ -148,12 +163,62 @@ export default function ViewProperty() {
                   <input type="text" placeholder="Escribe un comentario..." />
                 </div>
 
-                <button className={styles.submitOpinion}>+</button>
+                <button
+                  className={styles.submitOpinion}
+                  onClick={() => setShowCommentModal(true)}
+                >
+                  +
+                </button>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* MODAL: Comentario */}
+      {showCommentModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Comentario publicado</h2>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowCommentModal(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: Contactar */}
+      {showContactModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Pronto nos pondremos en contacto contigo</h2>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowContactModal(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL: WhatsApp */}
+      {showWhatsModal && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Redirigiendo a WhatsApp...</h2>
+            <button
+              className={styles.modalButton}
+              onClick={() => setShowWhatsModal(false)}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
