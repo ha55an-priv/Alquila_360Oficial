@@ -1,7 +1,7 @@
 // src/contrato/contrato.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, LessThan } from 'typeorm';
 import {
   Contrato,
   EstadoContrato,
@@ -15,6 +15,7 @@ import {
   Propiedad,
   EstadoPropiedad,
 } from '../entity/propiedad.entity';
+
 
 @Injectable()
 export class ContratoService {
@@ -128,7 +129,6 @@ export class ContratoService {
     await this.cuotaRepo.save(cuota);
     return cuota;
   }
-
   // ============================
   // CERRAR CONTRATO
   // (marcar VENCIDO + cuotas pendientes VENCIDO + propiedad Libre)
@@ -138,7 +138,9 @@ export class ContratoService {
       where: { idContrato },
       relations: ['pagos'],
     });
-    if (!contrato) throw new NotFoundException('Contrato no encontrado');
+    if (!contrato) {
+      throw new NotFoundException('Contrato no encontrado');
+    }
 
     contrato.estado = EstadoContrato.VENCIDO;
 
@@ -164,6 +166,104 @@ export class ContratoService {
     );
 
     return this.findOne(idContrato);
+  }
+
+  // ============================
+  // ESTADO DE CUENTA DEL INQUILINO
+  // ============================
+  async obtenerEstadoCuentaInquilino(ciInquilino: number) {
+    // 1) Actualizar cuotas vencidas antes de calcular
+    await this.actualizarCuotasVencidas();
+
+    // 2) Buscar todos los contratos de este inquilino
+    const contratos = await this.contratoRepo.find({
+      where: { idInquilino: ciInquilino },
+      relations: ['pagos', 'propiedad'],
+    });
+
+    let totalDeuda = 0;
+    let totalMultas = 0;
+    let cuotasPendientes = 0;
+    let cuotasVencidas = 0;
+
+    const contratosDetalle = contratos.map((contrato) => {
+      const pagosDetalle = (contrato.pagos || []).map((pago) => {
+        const montoBase = Number(pago.montoBase);
+        const multa = Number(pago.multaAplicada || 0);
+        const total = Number(pago.montoTotal);
+
+        if (pago.estado === EstadoCuota.PENDIENTE) {
+          cuotasPendientes++;
+          totalDeuda += total;
+          totalMultas += multa;
+        } else if (pago.estado === EstadoCuota.VENCIDO) {
+          cuotasVencidas++;
+          totalDeuda += total;
+          totalMultas += multa;
+        }
+
+        return {
+          idPago: pago.idPago,
+          numeroCuota: pago.numeroCuota,
+          fechaVencimiento: pago.fechaVencimiento,
+          fechaPago: pago.fechaPago,
+          montoBase,
+          multaAplicada: multa,
+          montoTotal: total,
+          estado: pago.estado,
+        };
+      });
+
+      return {
+        idContrato: contrato.idContrato,
+        propiedad: contrato.propiedad,
+        estadoContrato: contrato.estado,
+        fechaInicio: contrato.fechaInicio,
+        fechaFin: contrato.fechaFin,
+        pagos: pagosDetalle,
+      };
+    });
+
+    const moroso = cuotasVencidas >= 3;
+
+    return {
+      inquilino: ciInquilino,
+      totalDeuda: Number(totalDeuda.toFixed(2)),
+      totalMultas: Number(totalMultas.toFixed(2)),
+      cuotasPendientes,
+      cuotasVencidas,
+      moroso,
+      contratos: contratosDetalle,
+    };
+  }
+
+  // ============================
+  // ¿ES INQUILINO MOROSO?
+  // (>= 3 cuotas vencidas)
+  // ============================
+  async esInquilinoMoroso(ciInquilino: number): Promise<boolean> {
+    // Primero actualizamos cuotas vencidas
+    await this.actualizarCuotasVencidas();
+
+    const contratos = await this.contratoRepo.find({
+      where: { idInquilino: ciInquilino },
+      relations: ['pagos'],
+    });
+
+    let cuotasVencidas = 0;
+
+    for (const contrato of contratos) {
+      for (const pago of contrato.pagos || []) {
+        if (pago.estado === EstadoCuota.VENCIDO) {
+          cuotasVencidas++;
+          if (cuotasVencidas >= 3) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
   }
 
   // ============================
@@ -218,5 +318,25 @@ export class ContratoService {
     if (!propiedad) return;
     propiedad.estado = estado;
     await this.propiedadRepo.save(propiedad);
+  }
+
+  // Marcar cuotas PENDIENTE como VENCIDO si ya pasó la fecha
+  private async actualizarCuotasVencidas() {
+    const hoy = new Date();
+
+    const cuotasPendientes = await this.cuotaRepo.find({
+      where: {
+        estado: EstadoCuota.PENDIENTE,
+        fechaVencimiento: LessThan(hoy),
+      },
+    });
+
+    if (!cuotasPendientes.length) return;
+
+    for (const cuota of cuotasPendientes) {
+      cuota.estado = EstadoCuota.VENCIDO;
+    }
+
+    await this.cuotaRepo.save(cuotasPendientes);
   }
 }

@@ -13,6 +13,12 @@ import { TicketPhoto } from '../entity/photo.entity';
 import { Problema } from '../entity/problema.entity';
 import { User } from '../entity/user.entity';
 import { CalificarTicketDto } from './calificar-ticket.dto';
+import { ContratoService } from '../contrato/contrato.service';
+
+import {
+  PagoTecnico,
+  PagoTecnicoEstado,
+} from '../entity/pagoTecnico.entity';
 
 @Injectable()
 export class TicketsService {
@@ -23,30 +29,53 @@ export class TicketsService {
     @InjectRepository(Problema)
     private problemaRepo: Repository<Problema>,
     @InjectRepository(User) private userRepo: Repository<User>,
+    private readonly contratoService: ContratoService, // <- AÑADIDO
+    @InjectRepository(PagoTecnico)
+    private readonly pagoTecnicoRepo: Repository<PagoTecnico>, // <- AQUÍ
   ) {}
 
   // =====================================
   // CREAR TICKET
   // =====================================
   async create(createDto: any) {
-    const ticket = this.ticketRepo.create({
-      idPropiedad: createDto.idPropiedad,
-      idInquilino: createDto.idInquilino,
-      descripcion: createDto.descripcion ?? null,
-      fechaReporte: new Date(createDto.fechaReporte ?? new Date()),
-      estado: 'SOLICITADO' as TicketStatus,
-    });
+  // 1) Verificar si el inquilino está en mora (>= 3 cuotas vencidas)
+  const idInquilino = Number(createDto.idInquilino);
 
-    if (createDto.problemas && createDto.problemas.length) {
-      const problemas = await this.problemaRepo.find({
-        where: { idProblema: In(createDto.problemas) },
-      });
-      // @ts-ignore
-      ticket.problemas = problemas;
-    }
-
-    return this.ticketRepo.save(ticket);
+  if (!idInquilino) {
+    throw new ForbiddenException(
+      'idInquilino inválido al crear el ticket.',
+    );
   }
+
+  const esMoroso = await this.contratoService.esInquilinoMoroso(
+    idInquilino,
+  );
+
+  if (esMoroso) {
+    throw new ForbiddenException(
+      'No puede registrar nuevos tickets por encontrarse en mora (3 cuotas vencidas).',
+    );
+  }
+
+  // 2) Lógica original para crear el ticket
+  const ticket = this.ticketRepo.create({
+    idPropiedad: createDto.idPropiedad,
+    idInquilino: idInquilino,
+    descripcion: createDto.descripcion ?? null,
+    fechaReporte: new Date(createDto.fechaReporte ?? new Date()),
+    estado: 'SOLICITADO' as TicketStatus,
+  });
+
+  if (createDto.problemas && createDto.problemas.length) {
+    const problemas = await this.problemaRepo.find({
+      where: { idProblema: In(createDto.problemas) },
+    });
+    // @ts-ignore
+    ticket.problemas = problemas;
+  }
+
+  return this.ticketRepo.save(ticket);
+}
 
   // =====================================
   // LISTAR TICKETS (según usuario)
@@ -466,4 +495,65 @@ async getAverageRatingForTechnician(idTecnico: number) {
       totalTickets: Number(r.totalTickets),
     }));
   }
+    // ============================
+  // REGISTRAR PAGO AL TÉCNICO POR TICKET
+  // ============================
+  async registrarPagoTecnico(
+    idTicket: number,
+    dto: {
+      idTecnico: number;
+      fecha?: string;
+      monto?: number;
+      motivo?: string;
+      metodoDePago?: string;
+      estado?: PagoTecnicoEstado;
+    },
+  ) {
+    // Verificar que el ticket exista
+    const ticket = await this.ticketRepo.findOne({
+      where: { idTicket },
+    });
+    if (!ticket) {
+      throw new NotFoundException('Ticket no encontrado');
+    }
+
+    const idTecnico = Number(dto.idTecnico);
+    if (!idTecnico) {
+      throw new ForbiddenException('Id_Tecnico inválido');
+    }
+
+    // Si no mandan fecha, usamos hoy (pero tu PK incluye Fecha, así que es clave)
+    const fecha = dto.fecha ? new Date(dto.fecha) : new Date();
+
+    // Crear pago (PK compuesta: Id_Ticket + Fecha)
+    const pago = this.pagoTecnicoRepo.create({
+      idTicket: idTicket,
+      fecha: fecha,
+      idTecnico: idTecnico,
+      motivo: dto.motivo ?? 'Pago por atención de ticket',
+      monto:
+        dto.monto !== undefined && dto.monto !== null
+          ? Number(dto.monto).toFixed(2)
+          : null,
+      metodoDePago: dto.metodoDePago ?? null,
+      estado: dto.estado ?? PagoTecnicoEstado.PAGADO,
+    });
+
+    await this.pagoTecnicoRepo.save(pago);
+    return pago;
+  }
+
+  // ============================
+  // LISTAR PAGOS POR TÉCNICO
+  // ============================
+  async listarPagosPorTecnico(idTecnico: number) {
+    const pagos = await this.pagoTecnicoRepo.find({
+      where: { idTecnico },
+      relations: ['ticket'],
+      order: { fecha: 'DESC' },
+    });
+
+    return pagos;
+  }
+
 }

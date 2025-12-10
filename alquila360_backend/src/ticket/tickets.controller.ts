@@ -8,63 +8,81 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Req,
   UploadedFiles,
   UseInterceptors,
+  UseGuards,
 } from '@nestjs/common';
+
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ticketsDiskStorage } from './uploads.config';
+
 import { TicketsService } from './ticket-service';
 import { CreateTicketDto } from './create-ticket.dto';
 import { UpdateTicketDto } from './update-ticket.dto';
 import { AssignTechnicianDto } from './assign-technician.dto';
-
 import { CalificarTicketDto } from './calificar-ticket.dto';
 
-// Placeholder decorators - reemplaza con tus guards/roles reales después
-function CurrentUser() {
-  return (target: any, key: any, index: any) => {};
-}
-function Roles(...r: any[]) {
-  return (target: any, key: any, descriptor: any) => {};
-}
+// AUTH
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { Roles } from '../auth/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
+import { CurrentUser } from '../auth/current-user.decorator';
+
+// ENTIDADES
+import { User } from '../entity/user.entity';
 
 @Controller('tickets')
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
-  // Crear ticket
+  // ==================================================
+  // CREAR TICKET (inquilino)
+  // ==================================================
   @Post()
-  async create(@Body() dto: CreateTicketDto) {
+  @Roles('inquilino', 'admin')
+  async create(
+    @Body() dto: CreateTicketDto,
+    @CurrentUser() user: User,
+  ) {
+    // INQUILINO REAL: forzar idInquilino = user.ci
+    dto.idInquilino = user.ci;
     return this.ticketsService.create(dto);
   }
 
-  // Listar tickets (según usuario / rol)
+  // ==================================================
+  // LISTAR TICKETS (según usuario / rol)
+  // ==================================================
   @Get()
-  async findAll(@Req() req: any) {
-    const user = req.user ?? null; // mientras no tengamos auth real
+  async findAll(@CurrentUser() user: User) {
     return this.ticketsService.findAllForUser(user);
   }
 
-  // Obtener un ticket por ID
+  // ==================================================
+  // OBTENER UN TICKET
+  // ==================================================
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return this.ticketsService.findOne(id);
   }
 
-  // Actualizar ticket (descrición, estado, fecha cierre, etc.)
+  // ==================================================
+  // ACTUALIZAR TICKET
+  // ==================================================
   @Patch(':id')
   async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdateTicketDto,
-    @Req() req: any,
+    @CurrentUser() user: User,
   ) {
-    const user = req.user ?? null;
     return this.ticketsService.update(id, dto, user);
   }
 
-  // Asignar técnico a un ticket
+  // ==================================================
+  // ASIGNAR TÉCNICO (solo admin)
+  // ==================================================
   @Post(':id/assign')
+  @Roles('admin', 'administrador')
   async assign(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: AssignTechnicianDto,
@@ -72,7 +90,9 @@ export class TicketsController {
     return this.ticketsService.assignTechnician(id, dto.idTecnico);
   }
 
-  // Subir fotos al ticket
+  // ==================================================
+  // SUBIR FOTOS
+  // ==================================================
   @UseInterceptors(
     FilesInterceptor('photos', 10, { storage: ticketsDiskStorage }),
   )
@@ -84,100 +104,126 @@ export class TicketsController {
     return this.ticketsService.addPhotosToTicket(id, files);
   }
 
-  // Cerrar ticket
+  // ==================================================
+  // CERRAR TICKET (admin o técnico asignado)
+  // ==================================================
   @Post(':id/close')
+  @Roles('admin', 'tecnico')
   async close(
     @Param('id', ParseIntPipe) id: number,
-    @Req() req: any,
+    @CurrentUser() user: User,
   ) {
-    const user = req.user ?? null;
     return this.ticketsService.closeTicket(id, user);
   }
 
-  // Reabrir ticket
+  // ==================================================
+  // REABRIR TICKET (solo admin)
+  // ==================================================
   @Post(':id/reopen')
+  @Roles('admin')
   async reopen(@Param('id', ParseIntPipe) id: number) {
     return this.ticketsService.reopenTicket(id);
   }
 
-  // ==============================
-  // CALIFICAR TÉCNICO
-  // ==============================
+  // ==================================================
+  // CALIFICAR TÉCNICO (solo INQUILINO dueño del ticket)
+  // ==================================================
   @Post(':id/calificar')
+  @Roles('inquilino')
   async calificar(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: CalificarTicketDto,
-    @Req() req: any,
+    @CurrentUser() user: User,
   ) {
-    const user = req.user ?? null; // luego irá el inquilino real autenticado
     return this.ticketsService.rateTicket(id, dto, user);
   }
 
-  // ==============================
+  // ==================================================
   // PROMEDIO DE CALIFICACIÓN POR TÉCNICO
-  // ==============================
+  // ==================================================
   @Get('tecnico/:id/promedio-calificacion')
   async getPromedioTecnico(
     @Param('id', ParseIntPipe) idTecnico: number,
   ) {
-    return this.ticketsService.getAverageRatingForTechnician(
-      idTecnico,
-    );
+    return this.ticketsService.getAverageRatingForTechnician(idTecnico);
   }
-    // ==============================
-  // ESTADÍSTICAS: TICKETS POR ESTADO
-  // ==============================
+
+  // ==================================================
+  // ESTADÍSTICAS
+  // (TODAS SOLO PARA ADMIN)
+  // ==================================================
+  @Roles('admin')
   @Get('stats/status')
   async statsByStatus() {
     return this.ticketsService.getStatsByStatus();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: TICKETS POR PRIORIDAD
-  // ==============================
+  @Roles('admin')
   @Get('stats/priority')
   async statsByPriority() {
     return this.ticketsService.getStatsByPriority();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: TIEMPO PROMEDIO DE RESOLUCIÓN
-  // ==============================
+  @Roles('admin')
   @Get('stats/resolution-time')
   async avgResolutionTime() {
     return this.ticketsService.getAverageResolutionTime();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: TÉCNICOS MÁS ASIGNADOS
-  // ==============================
+  @Roles('admin')
   @Get('stats/top-tecnicos-asignados')
   async topTecnicosAsignados() {
     return this.ticketsService.getTopTechniciansByAssignedTickets();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: TÉCNICOS MÁS RÁPIDOS
-  // ==============================
+  @Roles('admin')
   @Get('stats/top-tecnicos-rapidos')
   async topTecnicosRapidos() {
     return this.ticketsService.getTopTechniciansByResolutionTime();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: PROPIEDADES CON MÁS TICKETS
-  // ==============================
+  @Roles('admin')
   @Get('stats/top-propiedades')
   async topPropiedades() {
     return this.ticketsService.getTopPropertiesByTickets();
   }
 
-  // ==============================
-  // ESTADÍSTICAS: INQUILINOS CON MÁS REPORTES
-  // ==============================
+  @Roles('admin')
   @Get('stats/top-inquilinos')
   async topInquilinos() {
     return this.ticketsService.getTopInquilinosByTickets();
+  }
+    // ============================
+  // REGISTRAR PAGO AL TÉCNICO DE UN TICKET
+  // ============================
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin')
+  @Post(':id/registrar-pago-tecnico')
+  registrarPagoTecnico(
+    @Param('id') id: string,
+    @Body()
+    dto: {
+      idTecnico: number;
+      fecha?: string;
+      monto?: number;
+      motivo?: string;
+      metodoDePago?: string;
+    },
+  ) {
+    return this.ticketsService.registrarPagoTecnico(
+      Number(id),
+      dto,
+    );
+  }
+
+  // ============================
+  // LISTAR PAGOS RECIBIDOS POR UN TÉCNICO
+  // ============================
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('admin', 'tecnico')
+  @Get('tecnicos/:id/pagos')
+  getPagosPorTecnico(@Param('id') id: string) {
+    return this.ticketsService.listarPagosPorTecnico(Number(id));
   }
 
 }

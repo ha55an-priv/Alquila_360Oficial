@@ -6,9 +6,20 @@ import { Ticket } from '../entity/ticket.entity';
 import { TicketPhoto } from '../entity/photo.entity';
 import { Problema } from '../entity/problema.entity';
 import { User } from '../entity/user.entity';
+import { ContratoModule } from '../contrato/contrato.module';
+import { PagoTecnico } from '../entity/pagoTecnico.entity'; // <- IMPORTANTE
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Ticket, TicketPhoto, Problema, User])],
+  imports: [
+    TypeOrmModule.forFeature([
+      Ticket,
+      TicketPhoto,
+      Problema,
+      User,
+      PagoTecnico, // <- QUE ESTÉ AQUÍ
+    ]),
+    ContratoModule,
+  ],
   controllers: [TicketsController],
   providers: [TicketsService],
 })
