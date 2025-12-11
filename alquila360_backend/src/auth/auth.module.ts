@@ -7,10 +7,11 @@ import { JwtStrategy } from './jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { RolesGuard } from './roles.guard';
+import { Role } from '../entity/rol.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Role]),
     JwtModule.register({
       secret: 'ALQUILA360_SUPER_SECRET', // TODO: .env
       signOptions: { expiresIn: '7d' },

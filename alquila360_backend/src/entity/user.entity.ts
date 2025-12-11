@@ -60,6 +60,7 @@ fechaNacimiento: Date | null;
         }
     })
     propiedades: Propiedad[];
+    
     @OneToMany(() => Contrato, contrato => contrato.inquilino)
     contratosInquilino: Contrato[];
 

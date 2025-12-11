@@ -4,17 +4,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { PropertyController } from './property.controller';
 import { PropertyService } from './property.service';
-import { Property } from './property.entity';
 import { Image } from './image.entity';
-import { User } from '../entity/user.entity';   // 👈 IMPORTAR User
+import { User } from '../entity/user.entity';  
 import { LocalStorageModule } from '../storage/local-storage.module';
+import { Propiedad } from 'src/entity/propiedad.entity';
 
 @Module({
   imports: [
+
     TypeOrmModule.forFeature([
-      Property,
+      Propiedad,
       Image,
-      User,           // 👈 AÑADIR User AQUÍ
+      User,     
     ]),
     LocalStorageModule,
   ],

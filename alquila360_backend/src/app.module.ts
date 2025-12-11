@@ -12,8 +12,20 @@ import { TicketsModule } from './ticket/tickets.module';
 import { ContratoModule } from './contrato/contrato.module';
 
 // Entidades requeridas
-import { User } from './entity/user.entity';
-import { Property } from './property/property.entity';
+import { User } from "./entity/user.entity"; 
+import { TelefonoUsuario } from "./entity/telefonoUsuario.entity";
+import { EmailUsuario } from "./entity/emailUsuario.entity"; 
+import { Role } from "./entity/rol.entity";
+import { Propiedad } from "./entity/propiedad.entity";
+import { Contrato } from "./entity/contrato.entity";
+import { MetodoPago } from "./entity/metodoPago.entity";
+import { PagoAlquiler } from "./entity/pago_alquiler.entity";
+import { Ticket } from "./entity/ticket.entity";
+import { Problema } from "./entity/problema.entity";
+import { Resena } from "./entity/resena.entity";
+import { PagoTecnico } from "./entity/pagoTecnico.entity";
+import { TicketPhoto } from "./entity/photo.entity";
+
 import { Image } from './property/image.entity';
 import { RoleModule } from './role/role.module';
 
@@ -29,14 +41,31 @@ import { RoleModule } from './role/role.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3306,
+      port: 3308,
       username: 'alquila360_admin',     // ⚠️ Usuario que te funcionaba
       password: '10902218',             // ⚠️ Tu contraseña
       database: 'alquila360',
 
-      autoLoadEntities: true,
-      synchronize: true,
-      entities: [User, Property, Image], // Puedes dejarlo o quitarlo si usas autoLoadEntities
+      entities: [
+              User,
+              EmailUsuario,
+              TelefonoUsuario, 
+              Role, 
+              Propiedad, 
+              Contrato, 
+              MetodoPago, 
+              PagoAlquiler, 
+              Ticket, 
+              TicketPhoto,
+              Problema, 
+              Resena, 
+              PagoTecnico,
+              Image
+          ],
+      //autoLoadEntities: true,
+      dropSchema: false,
+      synchronize: false,
+      //entities: [User, Property, Image], // Puedes dejarlo o quitarlo si usas autoLoadEntities
     }),
 
     // 3. MÓDULOS

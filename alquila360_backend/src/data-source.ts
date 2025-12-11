@@ -19,7 +19,7 @@ import { TicketPhoto } from "./entity/photo.entity";
 const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 3306,
+    port: 3308,
     username: "alquila360_admin",
     password: "10902218",
     database: "alquila360",
@@ -41,8 +41,9 @@ const AppDataSource = new DataSource({
         PagoTecnico
     ],
     
-    synchronize: false, // Esto es clave para crear/actualizar las tablas
-    logging: true, // Cambia a 'true' para ver las consultas SQL (útil para debug)
+    synchronize: false,
+    dropSchema: false, // Esto es clave para crear/actualizar las tablas
+    //logging: true, // Cambia a 'true' para ver las consultas SQL (útil para debug)
 });
 
 export default AppDataSource;

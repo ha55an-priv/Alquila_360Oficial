@@ -1,192 +1,206 @@
 "use client";
 
-import { useState } from "react";
-import { Search, X, ChevronDown, ChevronUp, Bell } from "lucide-react";
+import { useState, useEffect } from "react"; 
+import { Search, X, ChevronDown, ChevronUp, Bell, Trash2, Edit } from "lucide-react"; 
 import styles from "./styles.module.css";
 import Link from "next/link";
-import PropService from "../services/prop.service";
+// Importaciones del servicio
+import { 
+    getAuthToken, 
+    getOwnerProperties, 
+    deleteProperty,
+    // ... otros services
+} from "../services/property.service"; 
+// Interfaces
+import { Property as BackendProperty, EstadoPropiedad } from "@/app/interfaces/property.interface";
 
-interface Property {
-  id: number;
-  type: string;
-  name: string;
-  price: string;
-  description: string;
-  location: string;
-  image: string;
+// Definir la interfaz local
+interface Property extends BackendProperty {
+    estado: EstadoPropiedad;
 }
 
-const mockProperties: Property[] = [
-  {
-    id: 1,
-    type: "Casa",
-    name: "Casa Moderna en Zona Norte",
-    price: "Bs. 3,500/mes",
-    description: "Hermosa casa de 3 habitaciones con patio amplio y garaje para 2 vehículos.",
-    location: "Cochabamba",
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=400",
-  },
-  {
-    id: 2,
-    type: "Departamento",
-    name: "Departamento Céntrico",
-    price: "Bs. 2,800/mes",
-    description: "Departamento de 2 habitaciones en pleno centro de la ciudad.",
-    location: "Cercado",
-    image: "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400",
-  },
-  {
-    id: 3,
-    type: "Campo",
-    name: "Terreno Agrícola",
-    price: "Bs. 5,000/mes",
-    description: "Amplio terreno agrícola con acceso a agua y electricidad.",
-    location: "Quillacollo",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400",
-  },
-];
 
 export default function Properties() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [showUserMenu, setShowUserMenu] = useState(false);
-  const [minPrice, setMinPrice] = useState("");
-  const [maxPrice, setMaxPrice] = useState("");
+    // [ESTADOS DE UI]
+    const [searchTerm, setSearchTerm] = useState("");
+    const [showUserMenu, setShowUserMenu] = useState(false);
+    // const [minPrice, setMinPrice] = useState(""); // No utilizados, se pueden eliminar si no se usan
+    // const [maxPrice, setMaxPrice] = useState(""); // No utilizados, se pueden eliminar si no se usan
+    
+    // [ESTADOS DE DATOS Y CARGA]
+    const [properties, setProperties] = useState<Property[]>([]); 
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    
+    // [ESTADO DE AUTENTICACIÓN PARA TIMING]
+    const [tokenAvailable, setTokenAvailable] = useState<string | null>(null);
 
-  return (
-    <div className={styles.page}>
-      {/* HEADER */}
-      <header className={styles.header}>
-        <div className={styles.headerOverlay} />
 
-        <div className={styles.headerContent}>
-          <div className={styles.logo}>
-            <img src="/LOGO.png" alt="Logo" className={styles.logoImg} />
-            <span>ALQUILA360</span>
-          </div>
+    // 🛑 HOOK PARA CARGAR PROPIEDADES (Manejo de la Condición de Carrera)
+    useEffect(() => {
+        const currentToken = getAuthToken();
+        
+        // 1. Si el token aparece, lo guardamos y forzamos re-ejecución.
+        if (currentToken && !tokenAvailable) {
+            setTokenAvailable(currentToken);
+            return; 
+        }
 
-          {/* BUSCADOR */}
-          <div className={styles.searchBox}>
-            <Search className={styles.searchIcon} />
-            <input
-              type="text"
-              placeholder="Buscar propiedades..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            {searchTerm && (
-              <button
-                className={styles.clearBtn}
-                onClick={() => setSearchTerm("")}
-              >
-                <X size={18} />
-              </button>
-            )}
-          </div>
+        // 2. Si la página carga sin token, mostramos error de autenticación.
+        if (!currentToken && !tokenAvailable) {
+            setLoading(false);
+            setError("Acceso denegado. Por favor, inicie sesión.");
+            return;
+        }
 
-          {/* USUARIO */}
-          <button
-            className={styles.userBtn}
-            onClick={() => setShowUserMenu(!showUserMenu)}
-          >
-            <div className={styles.userAvatar}></div>
-            <span>USUARIO</span>
-            {showUserMenu ? <ChevronUp /> : <ChevronDown />}
-          </button>
+        // 3. Ejecutamos la carga de datos solo si tokenAvailable es truthy (segunda ejecución)
+        const loadProperties = async () => {
+            try {
+                setLoading(true);
+                setError(null); 
+                
+                const data = await getOwnerProperties(); 
+                
+                setProperties(data as Property[]); 
+                
+            } catch (err) {
+                console.error("Fallo al cargar propiedades:", err);
+                const errorMessage = (err as Error).message;
+                if (errorMessage.includes("Acceso no autorizado") || errorMessage.includes("401")) {
+                    setError("Sesión expirada o no autorizada. Por favor, inicie sesión nuevamente.");
+                } else {
+                    setError("Error al obtener propiedades. Intente más tarde.");
+                }
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (tokenAvailable) {
+             loadProperties();
+        }
+    }, [tokenAvailable]); 
+
+
+    // FUNCIÓN DE ELIMINACIÓN
+    const handleDelete = async (id: number) => {
+        if (!confirm("¿Está seguro de que desea eliminar esta propiedad? Esta acción es irreversible.")) {
+            return;
+        }
+        try {
+            await deleteProperty(id);
+            setProperties(prev => prev.filter(p => p.idPropiedad !== id));
+        } catch (err) {
+            alert("Error al eliminar la propiedad. Verifique su sesión o permisos.");
+            console.error("Error deleting property:", err);
+        }
+    };
+
+
+    // FILTRO DE PROPIEDADES
+    const filteredProperties = properties.filter(p => 
+        p.descripcion?.toLowerCase().includes(searchTerm.toLowerCase()) || 
+        p.ciudad?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+
+    return (
+        <div className={styles.page}>
+            {/* HEADER */}
+            <header className={styles.header}>
+                 {/* Estructura básica del header para ser funcional */}
+                <div className={styles.headerOverlay}></div>
+                <div className={styles.headerContent}>
+                    <div className={styles.logo}>
+                        <img src="/logo.png" alt="Logo" className={styles.logoImg} />
+                        Propiedades
+                    </div>
+                    <div className={styles.searchBox}>
+                        <Search size={18} className={styles.searchIcon} />
+                        <input 
+                            type="text" 
+                            placeholder="Buscar por ciudad, descripción..." 
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        {searchTerm && (
+                            <button className={styles.clearBtn} onClick={() => setSearchTerm("")}>
+                                <X size={18} />
+                            </button>
+                        )}
+                    </div>
+                    <button className={styles.userBtn} onClick={() => setShowUserMenu(!showUserMenu)}>
+                        <span>Usuario Logueado</span>
+                        <div className={styles.userAvatar}>U</div>
+                    </button>
+                </div>
+            </header>
+
+            {/* MAIN */}
+            <div className={styles.main}>
+                {/* SIDEBAR */}
+                <aside className={styles.sidebar}>
+                    <h2>INMUEBLES PUBLICADOS</h2>
+                    <p>Nro de resultados: {filteredProperties.length}</p>
+                    {/* Aquí irían los filtros de precio, tipo, etc. */}
+                </aside>
+
+                {/* LISTA DE PROPIEDADES */}
+                <section className={styles.propertiesList}>
+                    {loading && <p>Cargando propiedades...</p>}
+                    {error && <p className={styles.errorMessage}>Error: {error}</p>}
+
+                    {!loading && !error && filteredProperties.length === 0 && (
+                        <p>No se encontraron propiedades publicadas para este usuario.</p>
+                    )}
+
+                    {/* 🛑 MAPEADO Y RENDERIZADO VISUAL DE CADA PROPIEDAD */}
+                    {filteredProperties.map((p) => (
+                        <div key={p.idPropiedad} className={styles.propertyItem}>
+                            
+                            {/* IMAGEN: Asume que p.images[0].fileName es la URL/ruta de la imagen */}
+                            <div className={styles.propertyImageContainer}>
+                                {p.images && p.images.length > 0 && p.images[0].url ? (
+                                    <img 
+                                        // 🛑 NECESITAS LA URL COMPLETA DEL BACKEND para la imagen
+                                        // Reemplaza 'http://localhost:3001/uploads/' con la ruta base de tus archivos estáticos
+                                        src={`http://localhost:3001/uploads/${p.images[0].url}`} 
+                                        alt={`Imagen de ${p.descripcion}`} 
+                                        className={styles.propertyImage} 
+                                    />
+                                ) : (
+                                    <div className={styles.imagePlaceholder}>
+                                        Sin imagen
+                                    </div>
+                                )}
+                            </div>
+                            
+                            {/* DETALLES */}
+                            <div className={styles.propertyDetails}>
+                                <h3>{p.descripcion} ({p.tipo})</h3>
+                                <p><strong>Ciudad:</strong> {p.ciudad}</p>
+                                <p><strong>Dirección:</strong> {p.calle} {p.numViv ? `, Nro ${p.numViv}` : ''}</p>
+                                <p><strong>Estado:</strong> {p.estado}</p>
+                            </div>
+
+                            {/* BOTONES */}
+                            <div className={styles.propertyButtonWrapper}>
+                                <Link href={`/editProperty/${p.idPropiedad}`}>
+                                    <button className={styles.editButton}>
+                                        <Edit size={18} /> EDITAR
+                                    </button>
+                                </Link>
+                                <button 
+                                    className={styles.deleteButton}
+                                    onClick={() => handleDelete(p.idPropiedad)}
+                                >
+                                    <Trash2 size={18} /> ELIMINAR
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </section>
+            </div>
         </div>
-
-        <div className={styles.headerSubMenu}>
-          <Link href="/listProperty" style={{ textDecoration: "none", color: "inherit" }}>
-            <div className={styles.leftMenu}>PROPIEDADES</div>
-          </Link>
-
-          <Link href="/contractList" style={{ textDecoration: "none", color: "inherit" }}>
-            <div className={styles.rightMenu}>
-              <span>CONTRATOS</span>
-              <Bell className={styles.bellIcon} />
-            </div>
-          </Link>
-        </div>
-      </header>
-
-      {/* MAIN */}
-      <div className={styles.main}>
-        {/* SIDEBAR */}
-        <aside className={styles.sidebar}>
-          <h2>INMUEBLES</h2>
-          <p>Nro de resultados</p>
-
-          <h3>INMUEBLES</h3>
-          <ul>
-            <li>Casas (Nro de casas)</li>
-            <li>Departamentos (Nro de departamentos)</li>
-            <li>Locales (Nro de locales)</li>
-            <li>Campos (Nro de campos)</li>
-            <li>Oficinas (Nro de oficinas)</li>
-            <li>Otros (Nro de otros)</li>
-          </ul>
-
-          <h3>UBICACIÓN</h3>
-          <ul>
-            <li>Santa Cruz</li>
-            <li>Cochabamba</li>
-            <li>La Paz</li>
-            <li>Tarija</li>
-            <li>Potosí</li>
-            <li>Oruro</li>
-            <li>Beni</li>
-            <li>Pando</li>
-            <li>Chuquisaca</li>
-          </ul>
-
-          {/* PRECIO MIN/MAX */}
-          <div className={styles.propertiesFilterSection}>
-            <h3 className={styles.propertiesFilterTitle}>PRECIO</h3>
-            <p className={styles.propertiesPriceSubtitle}>Mínimo - Máximo</p>
-
-            <div className={styles.propertiesPriceInputs}>
-              <input
-                type="number"
-                placeholder="Mínimo"
-                className={styles.propertiesPriceInput}
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-              />
-              <input
-                type="number"
-                placeholder="Máximo"
-                className={styles.propertiesPriceInput}
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-              />
-            </div>
-          </div>
-        </aside>
-
-        {/* LISTA DE PROPIEDADES */}
-        <section className={styles.propertiesList}>
-          {mockProperties.map((p) => (
-            <div key={p.id} className={styles.propertyItem}>
-              <div className={styles.propertyImage}>
-                <img src={p.image} alt={p.name} />
-              </div>
-
-              <div className={styles.propertyInfo}>
-                <p className={styles.type}>{p.type}</p>
-                <h3 className={styles.name}>{p.name}</h3>
-                <p className={styles.price}>{p.price}</p>
-                <p className={styles.desc}>{p.description}</p>
-                <p className={styles.location}>{p.location}</p>
-              </div>
-
-              <div className={styles.propertyButtonWrapper}>
-                <Link href="/viewProperty">
-                  <button className={styles.viewButton}>VER PROPIEDAD</button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </section>
-      </div>
-    </div>
-  );
+    );
 }

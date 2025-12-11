@@ -2,6 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn, ManyToMany, OneToMany} from "ty
 import { User } from "./user.entity"; 
 import { Contrato } from "./contrato.entity";
 import { Ticket } from "./ticket.entity";
+import { Image } from '../property/image.entity';
 
 export enum EstadoPropiedad {
   Libre = 'Libre',
@@ -44,4 +45,7 @@ export class Propiedad {
     
     @OneToMany(() => Ticket, ticket => ticket.propiedad)
     tickets: Ticket[];
+
+    @OneToMany(() => Image, image => image.property,{ onDelete: 'CASCADE' })
+    images: Image[];
 }

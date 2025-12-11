@@ -1,32 +1,45 @@
+
+
 import { instance } from "../utils/axios.util";
-import { isAxiosError } from "axios";
 
-interface loginData {
-  email: string;
-  password: string;
+
+
+interface LoginCredentials {
+    ci: number;
+    contrasena: string;
 }
 
-interface loginResponse {
-  token: string;
-  userId: string;
-  role: string;
-  fullName: string;
-  email: string;
+interface AuthResponse {
+    token: string;
+    message: string;
+    user: any; // Puedes mejorar este tipo si tienes una interfaz User en el frontend
 }
 
-const AuthService = {
-  login: async (data: loginData): Promise<loginResponse> => {
+
+export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
     try {
-      const response = await instance.post<loginResponse>("/auth/login", data);
-      return response.data;
+        // La instancia de Axios configurada (instance)
+        const response = await instance.post("/auth/login", credentials);
+        const data: AuthResponse = response.data;
+        
+        // CRÍTICO: Almacenar el token para que el interceptor lo adjunte automáticamente
+        if (data.token) {
+            localStorage.setItem('authToken', data.token); // Usando 'authToken' como clave
+        }
+
+        return data;
+
     } catch (error) {
-      if (isAxiosError(error)) {
-        const msg = error.response?.data?.message || "Error al iniciar sesión";
-        throw new Error(msg);
-      }
-      throw new Error("Error desconocido al iniciar sesión");
+        // Re-lanzar el error para que el componente LoginPage.tsx lo capture 
+        // y pueda mostrar el mensaje de error del backend (ej: "Contraseña incorrecta")
+        throw error;
     }
-  },
 };
 
-export default AuthService;
+/**
+ * Elimina el token del LocalStorage para cerrar la sesión.
+ */
+export const logout = (): void => {
+    localStorage.removeItem('authToken');
+    // Adicionalmente, puedes redirigir al usuario aquí si es necesario
+};

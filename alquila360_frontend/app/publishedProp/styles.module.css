@@ -199,10 +199,97 @@
   margin-top: 3px;
 }
 
-/* BUTTON */
+
+
+
+.propertyItem:hover {
+    transform: translateY(-2px); /* Efecto hover elegante */
+}
+/* TEXTOS Y DETALLES */
+.propertyDetails {
+    flex: 1;
+    padding: 20px; /* Padding interno */
+    display: flex;
+    flex-direction: column;
+}
+
+.propertyDetails h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.propertyDetails p {
+    font-size: 14px;
+    color: #555;
+    margin: 3px 0;
+}
+
+.propertyDetails strong {
+    color: #000;
+}
+
+
+/* CONTENEDOR DE IMAGEN */
+.propertyImageContainer {
+    width: 220px; /* Ancho fijo para la imagen */
+    height: 100%;
+    overflow: hidden;
+    flex-shrink: 0; /* No permite que la imagen se reduzca */
+}
+
+
+
+.imagePlaceholder {
+    width: 100%;
+    height: 100%;
+    background: #e0e0e0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-weight: 500;
+}
 .propertyButtonWrapper {
-  display: flex;
-  align-items: center;
+    display: flex;
+    flex-direction: column; /* Cambiar a columna */
+    justify-content: center;
+    gap: 10px; /* Espacio entre botones */
+    padding: 20px;
+    border-left: 1px solid #eee; /* Separador visual */
+}
+
+.editButton,
+.deleteButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    width: 120px; /* Ancho fijo para los botones */
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.editButton {
+    background: #4a90e2; /* Azul para editar */
+    color: white;
+    border: none;
+}
+.editButton:hover {
+    background: #357bd1;
+}
+
+.deleteButton {
+    background: #e24a4a; /* Rojo para eliminar */
+    color: white;
+    border: none;
+}
+.deleteButton:hover {
+    background: #d13535;
 }
 
 .viewButton {

@@ -1,7 +1,19 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    // Mantén las opciones de configuración existentes aquí
+    // (ej: reactStrictMode, output, etc.)
+
+    async rewrites() {
+        return [
+            {
+               
+                source: '/api/:path*',
+                
+                destination: 'http://localhost:3001/:path*',
+            },
+        ];
+    },
 };
 
 export default nextConfig;

@@ -17,7 +17,7 @@ import { Resena } from '../entity/resena.entity';
 import { PagoAlquiler } from '../entity/pago_alquiler.entity';
 import { TicketPhoto } from "../entity/photo.entity";
 import { Problema } from 'src/entity/problema.entity';
-
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
   imports: [
@@ -36,7 +36,7 @@ import { Problema } from 'src/entity/problema.entity';
       TicketPhoto,
       Ticket,        
       Problema,
-
+      AuthModule,
     ]),
   ],
   controllers: [UserController],
