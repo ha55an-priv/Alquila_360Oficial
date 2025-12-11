@@ -1,49 +1,21 @@
-import { IsDateString, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from 'class-validator';
+import { IsNumber, IsOptional, IsEnum, IsDateString, IsString } from 'class-validator';
 import { TipoMulta, EstadoContrato } from 'src/entity/contrato.entity';
 
-export class CreateContractDto {
-  @IsNumber()
-  @IsNotEmpty()
-  idInquilino: number;
+export class CreateContratoDto {
+  @IsNumber() idInquilino: number;
+  @IsNumber() idPropiedad: number;
 
-  @IsNumber()
-  @IsNotEmpty()
-  idPropiedad: number;
+  @IsDateString() fechaInicio: string;
+  @IsOptional() @IsDateString() fechaFin?: string;
 
-  @IsDateString()
-  @IsNotEmpty()
-  fechaInicio: string;
+  @IsOptional() @IsString() explicacion?: string;
 
-  @IsDateString()
-  @IsOptional()
-  fechaFin?: string;
+  @IsString() precioMensual: string;
+  @IsOptional() @IsString() adelanto?: string;
+  @IsString() garantia: string;
 
-  @IsString()
-  @IsOptional()
-  explicacion?: string;
+  @IsOptional() @IsEnum(TipoMulta) tipoMulta?: TipoMulta;
+  @IsOptional() @IsString() multaRetraso?: string;
 
-
-  @IsString()
-  @IsNotEmpty()
-  precioMensual: string;
-
-  @IsString()
-  @IsOptional()
-  adelanto?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  garantia: string;
-
-  @IsEnum(TipoMulta)
-  @IsNotEmpty()
-  tipoMulta: TipoMulta;
-
-  @IsString()
-  @IsOptional()
-  multaRetraso?: string;
-
-  @IsEnum(EstadoContrato)
-  @IsOptional()
-  estado?: EstadoContrato;
+  @IsOptional() @IsEnum(EstadoContrato) estado?: EstadoContrato;
 }
