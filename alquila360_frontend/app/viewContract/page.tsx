@@ -21,6 +21,11 @@ export default function viewContract() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
+  // MODALES
+  const [openPDF, setOpenPDF] = useState(false);
+  const [openShare, setOpenShare] = useState(false);
+  const [openNote, setOpenNote] = useState(false);
+
   const contract: Contract = {
     id: 10,
     tenant: "Juan Pérez",
@@ -139,11 +144,24 @@ export default function viewContract() {
               Vigencia: {contract.startDate} → {contract.endDate}
             </span>
 
+            {/* BOTONES */}
             <div className={styles.actions}>
-              <button className={styles.contactBtn}>Descargar PDF</button>
-              <button className={styles.whatsappBtn}>Compartir</button>
+              <button
+                className={styles.contactBtn}
+                onClick={() => setOpenPDF(true)}
+              >
+                Descargar PDF
+              </button>
+
+              <button
+                className={styles.whatsappBtn}
+                onClick={() => setOpenShare(true)}
+              >
+                Compartir
+              </button>
             </div>
 
+            {/* NOTA */}
             <div className={styles.opinionSection}>
               <h3>Observaciones</h3>
 
@@ -153,13 +171,74 @@ export default function viewContract() {
                   <input type="text" placeholder="Escribe una nota..." />
                 </div>
 
-                <button className={styles.submitOpinion}>+</button>
+                <button
+                  className={styles.submitOpinion}
+                  onClick={() => setOpenNote(true)}
+                >
+                  +
+                </button>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
+
+      {/* ========================== MODAL PDF ========================== */}
+      {openPDF && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Descargar PDF</h2>
+            <p>¿Deseas descargar el contrato en formato PDF?</p>
+
+            <div className={styles.modalActions}>
+              <button className={styles.modalCancel} onClick={() => setOpenPDF(false)}>
+                Cancelar
+              </button>
+              <button className={styles.modalConfirm}>Descargar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================== MODAL COMPARTIR ========================== */}
+      {openShare && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Compartir contrato</h2>
+            <p>Elige un método para compartir el contrato.</p>
+
+            <div className={styles.modalActions}>
+              <button className={styles.modalConfirm}>WhatsApp</button>
+              <button className={styles.modalConfirm}>Correo</button>
+            </div>
+
+            <button className={styles.modalCancel} onClick={() => setOpenShare(false)}>
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ========================== MODAL NOTA ========================== */}
+      {openNote && (
+        <div className={styles.modalOverlay}>
+          <div className={styles.modalBox}>
+            <h2>Agregar nota</h2>
+
+            <textarea
+              className={styles.modalTextarea}
+              placeholder="Escribe una observación..."
+            ></textarea>
+
+            <div className={styles.modalActions}>
+              <button className={styles.modalCancel} onClick={() => setOpenNote(false)}>
+                Cancelar
+              </button>
+              <button className={styles.modalConfirm}>Guardar</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
