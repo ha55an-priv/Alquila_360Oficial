@@ -41,7 +41,7 @@ import { RoleModule } from './role/role.module';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
-      port: 3308,
+      port: 3306,
       username: 'alquila360_admin',     // ⚠️ Usuario que te funcionaba
       password: '10902218',             // ⚠️ Tu contraseña
       database: 'alquila360',

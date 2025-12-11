@@ -14,7 +14,16 @@ interface AuthResponse {
     message: string;
     user: any; // Puedes mejorar este tipo si tienes una interfaz User en el frontend
 }
-
+interface RegisterCredentials {
+    ci: number;
+    name: string;
+    contrasena: string;
+    roles?: number[]; // opcional, el backend ya asigna uno por defecto
+}
+interface RegisterResponse {
+    message: string;
+    user: any;
+}
 
 export const login = async (credentials: LoginCredentials): Promise<AuthResponse> => {
     try {
@@ -32,6 +41,17 @@ export const login = async (credentials: LoginCredentials): Promise<AuthResponse
     } catch (error) {
         // Re-lanzar el error para que el componente LoginPage.tsx lo capture 
         // y pueda mostrar el mensaje de error del backend (ej: "Contraseña incorrecta")
+        throw error;
+    }
+};
+
+export const register = async (credentials: RegisterCredentials): Promise<RegisterResponse> => {
+    try {
+        const response = await instance.post("/auth/register", credentials);
+        const data: RegisterResponse = response.data;
+        return data;
+    } catch (error) {
+        // Deja que el componente maneje el error (como en login)
         throw error;
     }
 };
