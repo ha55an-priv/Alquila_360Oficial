@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContratoController } from './contrato.controller';
 import { ContratoService } from './contrato.service';
@@ -17,4 +17,4 @@ import { ScheduleModule } from '@nestjs/schedule';
   providers: [ContratoService],
   exports: [ContratoService],
 })
-export class ContractsModule {}
+export class ContratoModule {}

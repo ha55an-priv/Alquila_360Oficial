@@ -1,222 +1,172 @@
-// src/contrato/contrato.service.ts
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import {
-  Contrato,
-  EstadoContrato,
-  TipoMulta,
-} from '../entity/contrato.entity';
-import {
-  EstadoCuota,
-  PagoAlquiler,
-} from '../entity/pago_alquiler.entity';
-import {
-  Propiedad,
-  EstadoPropiedad,
-} from '../entity/propiedad.entity';
+import { Contrato, EstadoContrato, TipoMulta } from 'src/entity/contrato.entity';
+import { User } from 'src/entity/user.entity';
+import { Propiedad, EstadoPropiedad } from 'src/entity/propiedad.entity';
+import { PagoAlquiler } from 'src/entity/pago_alquiler.entity';
+import { CreateContratoDto } from './dto/create-contrato.dto';
+import { UpdateContratoDto } from './dto/update-contrato.dto';
+import { CancelContratoDto } from './dto/cancel-contrato.dto';
+import { QueryHelpers } from 'src/utils/query-helpers';
 
 @Injectable()
 export class ContratoService {
   constructor(
     @InjectRepository(Contrato)
-    private contratoRepo: Repository<Contrato>,
-    @InjectRepository(PagoAlquiler)
-    private cuotaRepo: Repository<PagoAlquiler>,
+    private readonly contratoRepo: Repository<Contrato>,
+    @InjectRepository(User)
+    private readonly userRepo: Repository<User>,
     @InjectRepository(Propiedad)
-    private propiedadRepo: Repository<Propiedad>,
+    private readonly propiedadRepo: Repository<Propiedad>,
+    @InjectRepository(PagoAlquiler)
+    private readonly pagoRepo: Repository<PagoAlquiler>,
   ) {}
 
-  // ============================
-  // CREAR CONTRATO + GENERAR CUOTAS + MARCAR PROPIEDAD RENTADA
-  // ============================
-  async create(dto: any) {
-    const contrato = this.contratoRepo.create({
-      idInquilino: dto.idInquilino,
-      idPropiedad: dto.idPropiedad,
-      fechaInicio: new Date(dto.fechaInicio),
-      fechaFin: dto.fechaFin ? new Date(dto.fechaFin) : null,
-      explicacion: dto.explicacion ?? null,
-      precioMensual: dto.precioMensual,
-      adelanto: dto.adelanto ?? null,
+  async create(dto: CreateContratoDto): Promise<Contrato> {
+    // Validar inquilino
+    const inquilino = await this.userRepo.findOne({ where: { ci: dto.idInquilino } });
+    if (!inquilino) throw new NotFoundException(`Inquilino con ID ${dto.idInquilino} no encontrado`);
 
-      // Garantía = un mes de alquiler (puedes sobreescribir vía dto.garantia)
-      garantia: dto.garantia ?? dto.precioMensual,
+    // Validar propiedad
+    const propiedad = await this.propiedadRepo.findOne({ where: { idPropiedad: dto.idPropiedad } });
+    if (!propiedad) throw new NotFoundException(`Propiedad con ID ${dto.idPropiedad} no encontrada`);
+    if (propiedad.estado === EstadoPropiedad.Rentado) throw new BadRequestException('Propiedad ya rentada');
 
-      tipoMulta: dto.tipoMulta ?? TipoMulta.PORCENTAJE,
-      multaRetraso: dto.multaRetraso ?? '1.00', // 1% diario por defecto
-
-      estado: EstadoContrato.ACTIVO,
-    });
-
-    const savedContrato = await this.contratoRepo.save(contrato);
-
-    // Generar cuotas mensuales si hay fecha fin
-    if (savedContrato.fechaFin) {
-      const cuotas = this.generarCuotasParaContrato(savedContrato);
-      await this.cuotaRepo.save(cuotas);
+    // Validar fechas
+    const fechaInicio = new Date(dto.fechaInicio);
+    const fechaFin = dto.fechaFin ? new Date(dto.fechaFin) : null;
+    if (fechaFin && fechaFin < fechaInicio) {
+      throw new BadRequestException('La fecha de fin no puede ser anterior a la fecha de inicio');
     }
 
-    // Marcar propiedad como RENTADO
-    await this.actualizarEstadoPropiedad(
-      savedContrato.idPropiedad,
-      EstadoPropiedad.Rentado,
-    );
-
-    return this.findOne(savedContrato.idContrato);
-  }
-
-  async findAll() {
-    return this.contratoRepo.find({
-      relations: ['propiedad', 'inquilino', 'pagos'],
+    const contrato = this.contratoRepo.create({
+      ...dto,
+      fechaInicio,
+      fechaFin,
+      inquilino,
+      propiedad,
+      estado: dto.estado || EstadoContrato.ACTIVO,
     });
+
+    // Marcar propiedad como rentada
+    propiedad.estado = EstadoPropiedad.Rentado;
+    await this.propiedadRepo.save(propiedad);
+
+    return this.contratoRepo.save(contrato);
   }
 
-  async findOne(idContrato: number) {
+  async findAll(
+  page?: number,
+  limit?: number,
+  sort?: string,
+  order?: 'asc' | 'desc',
+): Promise<Contrato[]> {
+  const { page: p, limit: l } = QueryHelpers.normalizePage(page, limit);
+
+  // Campos válidos para ordenar
+  const validSortFields = ['idContrato', 'fechaInicio', 'fechaFin', 'precioMensual', 'estado'];
+  if (sort && !validSortFields.includes(sort)) {
+    throw new BadRequestException(`Campo de ordenamiento no válido: ${sort}`);
+  }
+
+  // Helper para convertir 'asc'/'desc' a 'ASC'/'DESC'
+  const formatOrder = (o?: 'asc' | 'desc'): 'ASC' | 'DESC' => {
+    if (!o) return 'ASC';
+    return o.toUpperCase() as 'ASC' | 'DESC';
+  };
+
+  // Orden por defecto o por parámetro
+  const orderBy = sort
+    ? { [sort]: formatOrder(order) }
+    : { fechaInicio: 'DESC' as 'ASC' | 'DESC' };
+
+  return this.contratoRepo.find({
+    relations: ['inquilino', 'propiedad', 'pagos'],
+    skip: (p - 1) * l,
+    take: l,
+    order: orderBy,
+  });
+}
+
+
+  async findOne(id: number): Promise<Contrato> {
     const contrato = await this.contratoRepo.findOne({
-      where: { idContrato },
-      relations: ['propiedad', 'inquilino', 'pagos'],
+      where: { idContrato: id },
+      relations: ['inquilino', 'propiedad', 'pagos'],
     });
-    if (!contrato) throw new NotFoundException('Contrato no encontrado');
+    if (!contrato) throw new NotFoundException(`Contrato con ID ${id} no encontrado`);
     return contrato;
   }
 
-  // ============================
-  // REGISTRAR PAGO DE UNA CUOTA
-  // ============================
-  async registrarPago(idPago: number, dto: any) {
-    const cuota = await this.cuotaRepo.findOne({
-      where: { idPago },
-      relations: ['contrato'],
-    });
-    if (!cuota) throw new NotFoundException('Cuota no encontrada');
+  async update(id: number, dto: UpdateContratoDto): Promise<Contrato> {
+    const contrato = await this.findOne(id);
 
-    const contrato = cuota.contrato;
-    const fechaPago = dto.fechaPago
-      ? new Date(dto.fechaPago)
-      : new Date();
+    // Validar y actualizar inquilino
+    if (dto.idInquilino && dto.idInquilino !== contrato.idInquilino) {
+      const inquilino = await this.userRepo.findOne({ where: { ci: dto.idInquilino } });
+      if (!inquilino) throw new NotFoundException(`Inquilino con ID ${dto.idInquilino} no encontrado`);
+      contrato.inquilino = inquilino;
+      contrato.idInquilino = inquilino.ci;
+    }
 
-    cuota.fechaPago = fechaPago;
-    cuota.metodoDePago = dto.metodoDePago ?? null;
-    cuota.motivo = dto.motivo ?? 'Pago de alquiler';
+    // Validar y actualizar propiedad
+    if (dto.idPropiedad && dto.idPropiedad !== contrato.idPropiedad) {
+      const propiedad = await this.propiedadRepo.findOne({ where: { idPropiedad: dto.idPropiedad } });
+      if (!propiedad) throw new NotFoundException(`Propiedad con ID ${dto.idPropiedad} no encontrada`);
+      if (propiedad.estado === EstadoPropiedad.Rentado) throw new BadRequestException('Propiedad ya rentada');
 
-    // Calcular multa si se pagó después de la fecha de vencimiento
-    let multa = 0;
-    const montoBase = Number(cuota.montoBase);
-
-    if (fechaPago > cuota.fechaVencimiento && contrato.multaRetraso) {
-      const diffMs =
-        fechaPago.getTime() - cuota.fechaVencimiento.getTime();
-      const diasMora = Math.floor(
-        diffMs / (1000 * 60 * 60 * 24),
-      );
-
-      const valorMulta = Number(contrato.multaRetraso); // monto fijo o %
-      if (contrato.tipoMulta === TipoMulta.MONTO_FIJO) {
-        multa = valorMulta * diasMora;
-      } else {
-        // porcentaje diario (ej. 1% diario)
-        const porcentaje = valorMulta / 100;
-        multa = montoBase * porcentaje * diasMora;
+      // Liberar propiedad anterior
+      if (contrato.propiedad) {
+        contrato.propiedad.estado = EstadoPropiedad.Libre;
+        await this.propiedadRepo.save(contrato.propiedad);
       }
+
+      contrato.propiedad = propiedad;
+      contrato.idPropiedad = propiedad.idPropiedad;
+      propiedad.estado = EstadoPropiedad.Rentado;
+      await this.propiedadRepo.save(propiedad);
     }
 
-    cuota.multaAplicada = multa ? multa.toFixed(2) : null;
-    cuota.montoTotal = (montoBase + multa).toFixed(2);
-    cuota.estado = EstadoCuota.PAGADO;
+    Object.assign(contrato, dto);
 
-    await this.cuotaRepo.save(cuota);
-    return cuota;
-  }
-
-  // ============================
-  // CERRAR CONTRATO
-  // (marcar VENCIDO + cuotas pendientes VENCIDO + propiedad Libre)
-  // ============================
-  async cerrarContrato(idContrato: number) {
-    const contrato = await this.contratoRepo.findOne({
-      where: { idContrato },
-      relations: ['pagos'],
-    });
-    if (!contrato) throw new NotFoundException('Contrato no encontrado');
-
-    contrato.estado = EstadoContrato.VENCIDO;
-
-    // Si no tenía fechaFin, la ponemos ahora
-    if (!contrato.fechaFin) {
-      contrato.fechaFin = new Date();
+    if (dto.fechaInicio) contrato.fechaInicio = new Date(dto.fechaInicio);
+    if (dto.fechaFin) {
+      const fechaFin = new Date(dto.fechaFin);
+      if (fechaFin < contrato.fechaInicio) throw new BadRequestException('La fecha de fin no puede ser anterior a la fecha de inicio');
+      contrato.fechaFin = fechaFin;
     }
 
-    // Marcar cuotas pendientes como VENCIDO
-    for (const cuota of contrato.pagos || []) {
-      if (cuota.estado === EstadoCuota.PENDIENTE) {
-        cuota.estado = EstadoCuota.VENCIDO;
-      }
+    return this.contratoRepo.save(contrato);
+  }
+
+  async cancel(id: number, dto: CancelContratoDto): Promise<Contrato> {
+    const contrato = await this.findOne(id);
+    if (contrato.estado === EstadoContrato.CANCELADO)
+      throw new BadRequestException('Contrato ya cancelado');
+
+    contrato.estado = EstadoContrato.CANCELADO;
+    contrato.explicacion = contrato.explicacion
+      ? contrato.explicacion + ' | ' + (dto.motivo || 'Cancelado')
+      : dto.motivo || 'Cancelado';
+
+    if (contrato.propiedad) {
+      contrato.propiedad.estado = EstadoPropiedad.Libre;
+      await this.propiedadRepo.save(contrato.propiedad);
     }
 
-    await this.cuotaRepo.save(contrato.pagos || []);
-    await this.contratoRepo.save(contrato);
-
-    // Marcar propiedad como LIBRE
-    await this.actualizarEstadoPropiedad(
-      contrato.idPropiedad,
-      EstadoPropiedad.Libre,
-    );
-
-    return this.findOne(idContrato);
+    return this.contratoRepo.save(contrato);
   }
 
-  // ============================
-  // Helpers internos
-  // ============================
+  async remove(id: number): Promise<void> {
+    const contrato = await this.findOne(id);
+    if (contrato.pagos.length > 0) throw new BadRequestException('No se puede eliminar contrato con pagos');
 
-  private generarCuotasParaContrato(contrato: Contrato): PagoAlquiler[] {
-    const cuotas: PagoAlquiler[] = [];
-    const inicio = new Date(contrato.fechaInicio);
-    const fin = new Date(contrato.fechaFin!);
-
-    let n = 1;
-    let current = new Date(inicio);
-
-    while (current <= fin) {
-      const vencimiento = new Date(current);
-
-      const cuota = this.cuotaRepo.create({
-        idContrato: contrato.idContrato,
-        numeroCuota: n++,
-        fechaVencimiento: vencimiento,
-        fechaPago: null,
-        montoBase: contrato.precioMensual,
-        multaAplicada: null,
-        montoTotal: contrato.precioMensual,
-        estado: EstadoCuota.PENDIENTE,
-        metodoDePago: null,
-        motivo: null,
-      });
-
-      cuotas.push(cuota);
-
-      current = this.addMonths(inicio, n - 1);
+    if (contrato.propiedad) {
+      contrato.propiedad.estado = EstadoPropiedad.Libre;
+      await this.propiedadRepo.save(contrato.propiedad);
     }
 
-    return cuotas;
-  }
-
-  private addMonths(date: Date, months: number): Date {
-    const d = new Date(date);
-    d.setMonth(d.getMonth() + months);
-    return d;
-  }
-
-  private async actualizarEstadoPropiedad(
-    idPropiedad: number,
-    estado: EstadoPropiedad,
-  ) {
-    const propiedad = await this.propiedadRepo.findOne({
-      where: { idPropiedad },
-    });
-    if (!propiedad) return;
-    propiedad.estado = estado;
-    await this.propiedadRepo.save(propiedad);
+    await this.contratoRepo.remove(contrato);
   }
 }

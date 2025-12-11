@@ -1,38 +1,53 @@
-// src/contrato/contrato.controller.ts
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Controller, Get, Post, Put, Delete, Param, Body, Query, UseGuards } from '@nestjs/common';
 import { ContratoService } from './contrato.service';
+import { CreateContratoDto } from './dto/create-contrato.dto';
+import { UpdateContratoDto } from './dto/update-contrato.dto';
+import { CancelContratoDto } from './dto/cancel-contrato.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Contrato } from 'src/entity/contrato.entity';
 
 @Controller('contratos')
 export class ContratoController {
   constructor(private readonly contratoService: ContratoService) {}
 
-  // Crear contrato + generar cuotas + marcar propiedad rentada
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() dto: any) {
+  create(@Body() dto: CreateContratoDto): Promise<Contrato> {
     return this.contratoService.create(dto);
   }
 
-  // Listar todos los contratos
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll() {
-    return this.contratoService.findAll();
+  getAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('sort') sort?: string,
+    @Query('order') order?: 'asc' | 'desc',
+  ): Promise<Contrato[]> {
+    return this.contratoService.findAll(page, limit, sort, order);
   }
 
-  // Obtener un contrato con sus pagos/cuotas
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.contratoService.findOne(Number(id));
+  getOne(@Param('id') id: number): Promise<Contrato> {
+    return this.contratoService.findOne(id);
   }
 
-  // Registrar pago de una cuota
-  @Post('pagos/:idPago/registrar')
-  registrarPago(@Param('idPago') idPago: string, @Body() dto: any) {
-    return this.contratoService.registrarPago(Number(idPago), dto);
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  update(@Param('id') id: number, @Body() dto: UpdateContratoDto): Promise<Contrato> {
+    return this.contratoService.update(id, dto);
   }
 
-  // Cerrar contrato (marcar vencido + liberar propiedad)
-  @Post(':id/cerrar')
-  cerrar(@Param('id') id: string) {
-    return this.contratoService.cerrarContrato(Number(id));
+  @UseGuards(JwtAuthGuard)
+  @Post(':id/cancel')
+  cancel(@Param('id') id: number, @Body() dto: CancelContratoDto): Promise<Contrato> {
+    return this.contratoService.cancel(id, dto);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id')
+  remove(@Param('id') id: number): Promise<void> {
+    return this.contratoService.remove(id);
   }
 }

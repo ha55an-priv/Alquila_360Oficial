@@ -1,4 +1,3 @@
-// src/entity/contrato.entity.ts
 import {
   Column,
   Entity,
@@ -47,64 +46,25 @@ export class Contrato {
   @Column({ name: 'F_Fin', type: 'date', nullable: true })
   fechaFin: Date | null;
 
-  @Column({
-    name: 'Contrato_Explicacion',
-    type: 'nvarchar',
-    length: 300,
-    nullable: true,
-  })
+  @Column({ name: 'Contrato_Explicacion', type: 'nvarchar', length: 300, nullable: true })
   explicacion: string | null;
 
-  @Column({
-    name: 'Precio_mensual',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    nullable: false,
-  })
+  @Column({ name: 'Precio_mensual', type: 'decimal', precision: 10, scale: 2 })
   precioMensual: string;
 
-  @Column({
-    name: 'Adelanto',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    nullable: true,
-  })
+  @Column({ name: 'Adelanto', type: 'decimal', precision: 10, scale: 2, nullable: true })
   adelanto: string | null;
 
-  @Column({
-    name: 'Garantia',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    nullable: false,
-  })
+  @Column({ name: 'Garantia', type: 'decimal', precision: 10, scale: 2 })
   garantia: string;
 
-  @Column({
-    name: 'Tipo_Multa',
-    type: 'enum',
-    enum: TipoMulta,
-    default: TipoMulta.PORCENTAJE,
-  })
+  @Column({ name: 'Tipo_Multa', type: 'enum', enum: TipoMulta, default: TipoMulta.PORCENTAJE })
   tipoMulta: TipoMulta;
 
-  @Column({
-    name: 'Multa_Retraso',
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    nullable: true,
-  })
+  @Column({ name: 'Multa_Retraso', type: 'decimal', precision: 10, scale: 2, nullable: true })
   multaRetraso: string | null;
 
-  @Column({
-    name: 'Estado',
-    type: 'enum',
-    enum: EstadoContrato,
-    default: EstadoContrato.ACTIVO,
-  })
+  @Column({ name: 'Estado', type: 'enum', enum: EstadoContrato, default: EstadoContrato.ACTIVO })
   estado: EstadoContrato;
 
   @OneToMany(() => PagoAlquiler, (pago) => pago.contrato)

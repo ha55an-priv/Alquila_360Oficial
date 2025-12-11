@@ -24,11 +24,12 @@ export class Propiedad {
     tipo: string | null;
 
     @Column({
-        type: 'enum', // <-- Cambia a 'enum'
-        enum: EstadoPropiedad, // <-- Usa el enum definido
-        nullable: true,
-    })
-    estado: EstadoPropiedad;
+  type: 'enum',
+  enum: EstadoPropiedad,
+  default: EstadoPropiedad.Libre,
+})
+estado: EstadoPropiedad;
+
 
     @Column({ type: 'nvarchar', length: 50, nullable: true })
     ciudad: string | null;
