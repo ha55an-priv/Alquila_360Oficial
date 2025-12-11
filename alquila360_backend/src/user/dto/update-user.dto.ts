@@ -1,20 +1,19 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsString, IsOptional, IsArray, IsBoolean, MinLength } from 'class-validator';
 
-export class CreateUserDto {
-  @IsNumber()
-  ci: number;
-
+export class UpdateUserDto {
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  name: string;
+  name?: string;
 
   @IsOptional()
   @IsString()
   fechaNacimiento?: string;
 
+  @IsOptional()
   @IsString()
   @MinLength(6)
-  contrasena: string;
+  contrasena?: string;
 
   @IsOptional()
   @IsBoolean()
@@ -39,4 +38,8 @@ export class CreateUserDto {
   @IsArray()
   @IsNumber({}, { each: true })
   propiedadIds?: number[];
+
+  @IsOptional()
+  @IsBoolean()
+  isTwoFactorEnabled?: boolean;
 }

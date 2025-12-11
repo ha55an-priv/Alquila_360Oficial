@@ -1,18 +1,16 @@
 // src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
+
 import { HController } from './h/h.controller';
 import { AuthModule } from './auth/auth.module';
 import { PropertyModule } from './property/property.module';
 import { TicketsModule } from './ticket/tickets.module';
 import { ContratoModule } from './contrato/contrato.module';
-
-// Entidades requeridas
-import { User } from './entity/user.entity';
+import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './entity/user.entity';
 import { Property } from './property/property.entity';
 import { Image } from './property/image.entity';
 import { RoleModule } from './role/role.module';
@@ -30,22 +28,25 @@ import { RoleModule } from './role/role.module';
       type: 'mysql',
       host: 'localhost',
       port: 3306,
-      username: 'alquila360_admin',     // ⚠️ Usuario que te funcionaba
-      password: '10902218',             // ⚠️ Tu contraseña
+      username: 'alquila360_admin',
+      password: '10902218',
       database: 'alquila360',
 
       autoLoadEntities: true,
       synchronize: true,
-      entities: [User, Property, Image], // Puedes dejarlo o quitarlo si usas autoLoadEntities
+      entities: [User, Property, Image],
     }),
 
     // 3. MÓDULOS
     UserModule,
     AuthModule,
-    PropertyModule,
-    RoleModule,
+    UsersModule,
+    PropertiesModule,
+    ContractsModule,
+    PaymentsModule,
     TicketsModule,
-    ContratoModule,
+    ReviewsModule,
+    ReportsModule,
   ],
 
   controllers: [AppController, HController],

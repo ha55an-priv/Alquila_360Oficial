@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn,ManyToMany,OneToMany, JoinTable } from "typeorm"; // ¡Cambiado a PrimaryColumn!
+import { Column, Entity, PrimaryColumn,ManyToMany,OneToMany, JoinTable } from "typeorm";
 import { Role } from "./rol.entity";
 import { TelefonoUsuario } from "./telefonoUsuario.entity";
 import { EmailUsuario } from "./emailUsuario.entity";

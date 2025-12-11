@@ -1,46 +1,31 @@
-// src/auth/auth.service.ts
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../entity/user.entity';
-import { Repository } from 'typeorm';
-import { LoginDto } from './login.dto';
-import * as bcrypt from 'bcrypt';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { UserService } from '../user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User)
-    private userRepo: Repository<User>,
+    private userService: UserService,
     private jwtService: JwtService,
-  ) {}
+  ){}
 
-  async login(dto: LoginDto) {
-    const user = await this.userRepo.findOne({
-      where: { ci: Number(dto.ci) },
-      relations: ['roles'],
-    });
+  async validateUser(email: string, password: string){
+    const user = await this.userService.findByEmail(email);
+    if(!user) throw new UnauthorizedException('Usuario no encontrado');
+    
 
-    if (!user) throw new UnauthorizedException('Usuario no encontrado');
+    const valid = await bcrypt.compare(password, user.passwordHash);
+    if(!valid) throw new UnauthorizedException('Contraseña incorrecta');
 
-    const passOk = await bcrypt.compare(dto.contrasena, user.contrasena);
+    return user;
+  }
 
-    if (!passOk) throw new UnauthorizedException('Contraseña incorrecta');
-
-    const payload = {
-      ci: user.ci,
-      roles: user.roles.map((r) => r.nombre),
-    };
-
-    const token = this.jwtService.sign(payload);
+  async login(user: any){
+    const payload = { sub: user.id, email: user.email, role: user.role};
 
     return {
-      message: 'Login exitoso',
-      token,
-      user,
+      access_token: this.jwtService.sign(payload),
     };
   }
 }
