@@ -162,9 +162,8 @@ export default function Properties() {
                             <div className={styles.propertyImageContainer}>
                                 {p.images && p.images.length > 0 && p.images[0].url ? (
                                     <img 
-                                        // 🛑 NECESITAS LA URL COMPLETA DEL BACKEND para la imagen
-                                        // Reemplaza 'http://localhost:3001/uploads/' con la ruta base de tus archivos estáticos
-                                        src={`http://localhost:3001/uploads/${p.images[0].url}`} 
+                                        
+                                        src={`http://localhost:3001${p.images[0].url}`}
                                         alt={`Imagen de ${p.descripcion}`} 
                                         className={styles.propertyImage} 
                                     />

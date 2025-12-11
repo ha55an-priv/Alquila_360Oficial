@@ -48,19 +48,19 @@ fechaNacimiento: Date | null;
     emails: EmailUsuario[];
 
     @ManyToMany(() => Propiedad, propiedad => propiedad.propietarios)
-    @JoinTable({
-        name: 'Posee', 
-        joinColumn: {
-            name: 'Id_Propietario', 
-            referencedColumnName: 'ci' 
-        },
-        inverseJoinColumn: {
-            name: 'Id_Propiedad', 
-            referencedColumnName: 'idPropiedad' 
-        }
-    })
-    propiedades: Propiedad[];
-    
+    @JoinTable({
+        name: 'Posee', 
+        joinColumn: {
+            name: 'Id_Propietario', 
+            referencedColumnName: 'ci' 
+        },
+        inverseJoinColumn: {
+            name: 'Id_Propiedad', 
+            referencedColumnName: 'idPropiedad'
+        }
+    })
+    propiedades: Propiedad[];
+
     @OneToMany(() => Contrato, contrato => contrato.inquilino)
     contratosInquilino: Contrato[];
 

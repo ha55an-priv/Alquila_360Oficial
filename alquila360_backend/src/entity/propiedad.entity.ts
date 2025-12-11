@@ -15,7 +15,7 @@ export class Propiedad {
     @PrimaryGeneratedColumn({ name: 'Id_Propiedad' })
     idPropiedad: number;
 
-    @ManyToMany(() => User, user => user.propiedades)
+    @ManyToMany(() => User, user => user.propiedades,{ onDelete: 'CASCADE' })
     propietarios: User[];
 
     @Column({ type: 'nvarchar', length: 200, nullable: true })

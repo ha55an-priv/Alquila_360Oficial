@@ -4,6 +4,7 @@ import AppDataSource from './data-source';
 import * as bodyParser from 'body-parser';
 import { join } from 'path'; // para manejar rutas
 import * as express from 'express';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
   try {
@@ -15,7 +16,7 @@ async function bootstrap() {
   }
 
   // Crear aplicación NestJS
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Body parser
   app.use(bodyParser.json({ limit: '10mb' }));
@@ -32,7 +33,11 @@ async function bootstrap() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
-  
+
+  app.useStaticAssets(join(__dirname, '..', 'uploads'), {
+      prefix: '/uploads/', // ⬅️ Esto hace que la URL /uploads/* funcione
+  });
+
   await app.listen(port);
   console.log(`Servidor NestJS corriendo en el puerto: ${port}`);
 }
