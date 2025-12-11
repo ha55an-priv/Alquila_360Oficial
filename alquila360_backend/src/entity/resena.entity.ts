@@ -6,12 +6,10 @@ export class Resena {
 
     @PrimaryGeneratedColumn({ name: 'Id_Reseña' })
     idResena: number;
-
     
     @Column({ name: 'Id_Criticon' })
     idCriticon: number; 
 
-    
     @ManyToOne(() => User, user => user.resenasCreadas)
     @JoinColumn({ name: 'Id_Criticon', referencedColumnName: 'ci' })
     criticon: User; 

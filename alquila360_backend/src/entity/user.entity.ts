@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn,ManyToMany,OneToMany, JoinTable } from "typeorm"; // ¡Cambiado a PrimaryColumn!
+import { Column, Entity, PrimaryColumn,ManyToMany,OneToMany, JoinTable } from "typeorm"; 
 import { Role } from "./rol.entity";
 import { TelefonoUsuario } from "./telefonoUsuario.entity";
 import { EmailUsuario } from "./emailUsuario.entity";
@@ -27,6 +27,7 @@ export class User {
     @Column({ type: "boolean", default: true }) 
     activacion: boolean; 
 
+    
     @ManyToMany(() => Role, role => role.users)
     @JoinTable({
         name: 'Usuario_Rol', 
@@ -40,8 +41,9 @@ export class User {
         }
     })
     roles: Role[];
+        
 
-    @OneToMany(() => TelefonoUsuario, telefono => telefono.usuario)
+   @OneToMany(() => TelefonoUsuario, telefono => telefono.usuario)
     telefonos: TelefonoUsuario[];
 
     @OneToMany(() => EmailUsuario, email => email.usuario)

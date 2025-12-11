@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "./user.entity"; 
+import { User } from "./user.entity";
+ 
 
 @Entity('Telefonos_Usuario') 
 export class TelefonoUsuario {
@@ -11,7 +12,7 @@ export class TelefonoUsuario {
     @PrimaryColumn({ type: 'nvarchar', length: 20 })
     telefono: string;
 
-    @ManyToOne(() => User, user => user.telefonos)
-    @JoinColumn({ name: 'Id_Usuario', referencedColumnName: 'ci' }) 
+   @ManyToOne(() => User, user => user.telefonos) 
     usuario: User; 
+
 }

@@ -18,7 +18,7 @@ import { PagoTecnico } from "./entity/pagoTecnico.entity";
 const AppDataSource = new DataSource({
     type: "mysql",
     host: "127.0.0.1",
-    port: 3306,
+    port: 3308,
     username: "alquila360_admin",
     password: "123456789",
     database: "alquila360",
@@ -26,8 +26,8 @@ const AppDataSource = new DataSource({
     // LISTAR TODAS LAS ENTIDADES CREADAS
     entities: [
         User,
-        EmailUsuario,
-        TelefonoUsuario, 
+       EmailUsuario,
+       TelefonoUsuario, 
         Role, 
         Propiedad, 
         Contrato, 
@@ -38,8 +38,9 @@ const AppDataSource = new DataSource({
         Resena, 
         PagoTecnico
     ],
-    
-    synchronize: false, // Esto es clave para crear/actualizar las tablas
+
+    dropSchema: true,
+    synchronize: true, // Esto es clave para crear/actualizar las tablas
     logging: true, // Cambia a 'true' para ver las consultas SQL (útil para debug)
 });
 

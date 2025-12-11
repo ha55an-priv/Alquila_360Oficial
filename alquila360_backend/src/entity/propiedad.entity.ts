@@ -43,5 +43,5 @@ export class Propiedad {
     contratos: Contrato[];
     
     @OneToMany(() => Ticket, ticket => ticket.propiedad)
-    tickets: Ticket[];
+   tickets: Ticket[];
 }

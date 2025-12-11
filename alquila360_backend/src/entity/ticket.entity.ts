@@ -14,16 +14,10 @@ export class Ticket {
     @JoinColumn({ name: 'Id_Propiedad', referencedColumnName: 'idPropiedad' })
     propiedad: Propiedad;
 
-    @Column({ name: 'Id_Propiedad' }) 
-    idPropiedad: number; 
-
     @ManyToOne(() => User, user => user.ticketsReportados)
     @JoinColumn({ name: 'Id_Inquilino', referencedColumnName: 'ci' })
-    inquilino: User;
+   inquilino: User;
     
-    @Column({ name: 'Id_Inquilino' }) 
-    idInquilino: number; 
-
     @Column({ type: 'nvarchar', length: 300, nullable: true })
     descripcion: string | null;
 

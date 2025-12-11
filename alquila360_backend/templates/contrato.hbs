@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Contrato de Arrendamiento</title>
+    <style>
+        body { font-family: sans-serif; margin: 50px; }
+        h1 { color: #333; text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .section-title { font-size: 1.2em; font-weight: bold; margin-top: 20px; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+        .data-point { margin-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+
+    <h1>Contrato de Arrendamiento</h1>
+    <p style="text-align: right;">Fecha de Firma (Generación): <strong>{{fechaFirma}}</strong></p>
+
+    <div class="section-title">Datos del Contrato</div>
+    <div class="data-point"><strong>Fecha de Inicio:</strong> {{fechaInicio}}</div>
+    <div class="data-point"><strong>Fecha de Finalización:</strong> {{fechaFin}}</div>
+    <div class="data-point"><strong>Explicación:</strong> {{explicacion}}</div>
+
+    <div class="section-title">Términos Financieros</div>
+    <div class="data-point"><strong>Precio Mensual:</strong> ${{precio}}</div>
+    <div class="data-point"><strong>Adelanto Inicial:</strong> ${{adelanto}}</div>
+    <div class="data-point"><strong>Multa por Retraso (%):</strong> {{multaRetraso}}</div>
+    
+    <hr>
+    
+    <div class="section-title">Datos del Inquilino </div>
+    <div class="data-point"><strong>CI/ID del Inquilino:</strong> {{inquilino.ci}}</div> 
+    
+    <div class="data-point"><strong>Nombre Completo:</strong> {{inquilino.nombreCompleto}}</div>
+
+    <div class="section-title">Datos de la Propiedad</div>
+    <div class="data-point"><strong>ID de la Propiedad:</strong> {{propiedad.idPropiedad}}</div>
+    
+    <div class="data-point"><strong>Tipo:</strong> {{propiedad.tipo}}</div>
+    <div class="data-point"><strong>Ciudad:</strong> {{propiedad.ciudad}}</div>
+    <div class="data-point"><strong>Calle:</strong> {{propiedad.calle}}</div>
+    <div class="data-point"><strong>Numero de Vivienda:</strong> {{propiedad.numero_Vivienda}}</div>
+    <div class="data-point"><strong>Descripcion:</strong> {{propiedad.descripcion}}</div>
+    
+    <hr>
+
+    <div class="section-title">Pagos Programados</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha de Pago</th>
+                <th>Monto</th>
+                <th>Estado Inicial</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each pagosProgramados}}
+            <tr>
+                <td>{{fechaPago}}</td>
+                <td>${{monto}}</td>
+                <td>{{estado}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+</body>
+</html>

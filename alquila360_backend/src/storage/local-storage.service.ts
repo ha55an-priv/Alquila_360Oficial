@@ -1,4 +1,5 @@
 // src/storage/local-storage.service.ts
+import { Express } from 'express';
 import { Injectable } from '@nestjs/common';
 import * as fs from 'fs';
 import * as path from 'path';

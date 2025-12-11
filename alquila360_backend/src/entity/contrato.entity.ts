@@ -17,12 +17,10 @@ export class Contrato {
     @PrimaryColumn({ name: 'F_ini', type: 'date' })
     fechaInicio: Date; 
 
-    
     @ManyToOne(() => User, user => user.contratosInquilino)
     @JoinColumn({ name: 'Id_Inquilino', referencedColumnName: 'ci' })
     inquilino: User;
 
-    
     @ManyToOne(() => Propiedad, propiedad => propiedad.contratos)
     @JoinColumn({ name: 'Id_Propiedad', referencedColumnName: 'idPropiedad' })
     propiedad: Propiedad;
@@ -34,17 +32,19 @@ export class Contrato {
 
     
     @Column({ name: 'Precio_mensual', type: 'decimal', precision: 10, scale: 2, nullable: false })
-    precioMensual: string; 
+    precioMensual: number;
 
     @Column({ name: 'Adelanto', type: 'decimal', precision: 10, scale: 2, nullable: true })
-    adelanto: string | null;
+    adelanto: number | null;
     
-    @Column({ name: 'F_Fin', type: 'date', nullable: true })
-    fechaFin: Date | null;
+    @Column({ name: 'F_Fin', type: 'date' })
+    fechaFin: Date;
 
     @Column({ name: 'Multa_Retraso', type: 'decimal', precision: 10, scale: 2, nullable: true })
-    multaRetraso: string | null;
+    multaRetraso: number | null;
 
-    @OneToMany(() => PagoAlquiler, pago => pago.contrato)
+    @OneToMany(() => PagoAlquiler, pago => pago.contrato, {
+        onDelete: 'CASCADE',
+    })
     pagos: PagoAlquiler[];
 }

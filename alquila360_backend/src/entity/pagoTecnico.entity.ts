@@ -15,7 +15,7 @@ export class PagoTecnico {
     idTecnico: number; 
 
     @ManyToOne(() => Ticket, ticket => ticket.pagosTecnico)
-    @JoinColumn({ name: 'Id_Ticket', referencedColumnName: 'idTicket' })
+   // @JoinColumn({ name: 'Id_Ticket', referencedColumnName: 'idTicket' })
     ticket: Ticket;
 
     @ManyToOne(() => User, user => user.pagosRecibidos)
@@ -27,7 +27,7 @@ export class PagoTecnico {
     motivo: string | null;
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-    monto: string | null; 
+    monto: number | null; 
 
     @Column({ name: 'Metodo_de_Pago', type: 'nvarchar', length: 50, nullable: true })
     metodoDePago: string | null;

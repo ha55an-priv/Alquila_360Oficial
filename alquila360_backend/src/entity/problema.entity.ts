@@ -14,7 +14,7 @@ export class Problema {
     @Column({ type: 'nvarchar', length: 20, nullable: true })
     prioridad: string | null;
 
-    @ManyToMany(() => Ticket, ticket => ticket.problemas)
+   @ManyToMany(() => Ticket, ticket => ticket.problemas)
     tickets: Ticket[];
 
     @ManyToMany(() => Ticket, ticket => ticket.problemasEmergencia)
