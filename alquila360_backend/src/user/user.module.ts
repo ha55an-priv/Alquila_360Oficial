@@ -14,4 +14,4 @@ import { Propiedad } from '../entity/propiedad.entity';
   providers: [UserService],
   exports: [UserService],
 })
-export class UsersModule {}
+export class UserModule {}

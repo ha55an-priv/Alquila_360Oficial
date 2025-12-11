@@ -15,11 +15,11 @@ import {
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ticketsDiskStorage } from './uploads.config';
 import { TicketsService } from './ticket-service';
-import { CreateTicketDto } from './create-ticket.dto';
-import { UpdateTicketDto } from './update-ticket.dto';
-import { AssignTechnicianDto } from './assign-technician.dto';
+import { CreateTicketDto } from './Dto/create-ticket.dto';
+import { UpdateTicketDto } from './Dto/update-ticket.dto';
+import { AssignTechnicianDto } from './Dto/assign-technician.dto';
 
-import { CalificarTicketDto } from './calificar-ticket.dto';
+import { CalificarTicketDto } from './Dto/calificar-ticket.dto';
 
 // Placeholder decorators - reemplaza con tus guards/roles reales después
 function CurrentUser() {

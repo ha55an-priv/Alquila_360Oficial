@@ -17,4 +17,4 @@ import { ScheduleModule } from '@nestjs/schedule';
   providers: [ContratoService],
   exports: [ContratoService],
 })
-export class ContractsModule {}
+export class ContratoModule {}

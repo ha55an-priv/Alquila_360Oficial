@@ -12,7 +12,7 @@ import { Ticket, TicketStatus } from '../entity/ticket.entity';
 import { TicketPhoto } from '../entity/photo.entity';
 import { Problema } from '../entity/problema.entity';
 import { User } from '../entity/user.entity';
-import { CalificarTicketDto } from './calificar-ticket.dto';
+import { CalificarTicketDto } from './Dto/calificar-ticket.dto';
 
 @Injectable()
 export class TicketsService {
