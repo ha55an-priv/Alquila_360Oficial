@@ -9,15 +9,7 @@ import { TelefonoUsuario } from '../entity/telefonoUsuario.entity';
 import { Propiedad } from '../entity/propiedad.entity';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([
-      User, 
-      Role, 
-      EmailUsuario, 
-      TelefonoUsuario, 
-      Propiedad
-    ]),
-  ],
+  imports: [TypeOrmModule.forFeature([User, Role, EmailUsuario, TelefonoUsuario, Propiedad])],
   controllers: [UserController],
   providers: [UserService],
   exports: [UserService],
