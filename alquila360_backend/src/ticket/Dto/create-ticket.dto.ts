@@ -1,10 +1,22 @@
-import { IsInt, IsOptional, IsString, MaxLength, IsDateString, IsArray } from 'class-validator';
+import {
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+  IsEnum,
+  IsArray,
+  IsDateString,
+} from 'class-validator';
+import { TicketPriority } from '../../entity/ticket.entity';
 
 export class CreateTicketDto {
   @IsInt()
+  @IsNotEmpty()
   idPropiedad: number;
 
   @IsInt()
+  @IsNotEmpty()
   idInquilino: number;
 
   @IsOptional()
@@ -12,10 +24,26 @@ export class CreateTicketDto {
   @MaxLength(300)
   descripcion?: string;
 
-  @IsDateString()
-  fechaReporte: string;
+  @IsOptional()
+  @IsEnum(TicketPriority)
+  prioridad?: TicketPriority;
 
   @IsOptional()
   @IsArray()
-  problemas?: number[];
+  @IsInt({ each: true })
+  problemaIds?: number[];
+
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  problemaEmergenciaIds?: number[];
+
+  @IsOptional()
+  @IsDateString()
+  fechaReporte?: string;
+
+  @IsOptional()
+  @IsArray()
+  @IsString({ each: true })
+  fotoUrls?: string[];
 }

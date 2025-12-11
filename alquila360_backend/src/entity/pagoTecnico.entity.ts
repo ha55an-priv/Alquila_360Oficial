@@ -1,4 +1,3 @@
-// src/entity/pagoTecnico.entity.ts
 import {
   Column,
   Entity,
@@ -16,7 +15,6 @@ export enum PagoTecnicoEstado {
 
 @Entity('Pago_Tecnico')
 export class PagoTecnico {
-  // Clave compuesta: Id_Ticket + Fecha
   @PrimaryColumn({ name: 'Id_Ticket' })
   idTicket: number;
 
@@ -26,9 +24,7 @@ export class PagoTecnico {
   @Column({ name: 'Id_Tecnico' })
   idTecnico: number;
 
-  @ManyToOne(() => Ticket, (ticket) => ticket.pagosTecnico, {
-    onDelete: 'CASCADE',
-  })
+  @ManyToOne(() => Ticket, (ticket) => ticket.pagosTecnico, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'Id_Ticket', referencedColumnName: 'idTicket' })
   ticket: Ticket;
 
@@ -36,34 +32,15 @@ export class PagoTecnico {
   @JoinColumn({ name: 'Id_Tecnico', referencedColumnName: 'ci' })
   tecnico: User;
 
-  @Column({
-    name: 'Motivo',
-    type: 'nvarchar',
-    length: 100,
-    nullable: true,
-  })
+  @Column({ name: 'Motivo', type: 'nvarchar', length: 100, nullable: true })
   motivo: string | null;
 
-  @Column({
-    type: 'decimal',
-    precision: 10,
-    scale: 2,
-    nullable: true,
-  })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   monto: string | null;
 
-  @Column({
-    name: 'Metodo_de_Pago',
-    type: 'nvarchar',
-    length: 50,
-    nullable: true,
-  })
+  @Column({ name: 'Metodo_de_Pago', type: 'nvarchar', length: 50, nullable: true })
   metodoDePago: string | null;
 
-  @Column({
-    type: 'enum',
-    enum: PagoTecnicoEstado,
-    default: PagoTecnicoEstado.PENDIENTE,
-  })
+  @Column({ type: 'enum', enum: PagoTecnicoEstado, default: PagoTecnicoEstado.PENDIENTE })
   estado: PagoTecnicoEstado;
 }

@@ -12,7 +12,7 @@ import { Propiedad } from './propiedad.entity';
 import { User } from './user.entity';
 import { Problema } from './problema.entity';
 import { PagoTecnico } from './pagoTecnico.entity';
-import { TicketPhoto } from './photo.entity';
+import { TicketPhoto } from './ticket-photo.entity';
 
 export enum TicketPriority {
   ROJA = 'ROJA',
@@ -33,7 +33,6 @@ export class Ticket {
   @PrimaryGeneratedColumn({ name: 'Id_Ticket' })
   idTicket: number;
 
-  // Propiedad relacionada
   @ManyToOne(() => Propiedad, (propiedad) => propiedad.tickets)
   @JoinColumn({ name: 'Id_Propiedad', referencedColumnName: 'idPropiedad' })
   propiedad: Propiedad;
@@ -41,7 +40,6 @@ export class Ticket {
   @Column({ name: 'Id_Propiedad' })
   idPropiedad: number;
 
-  // Inquilino
   @ManyToOne(() => User, (user) => user.ticketsReportados)
   @JoinColumn({ name: 'Id_Inquilino', referencedColumnName: 'ci' })
   inquilino: User;
@@ -49,7 +47,6 @@ export class Ticket {
   @Column({ name: 'Id_Inquilino' })
   idInquilino: number;
 
-  // Datos del ticket
   @Column({ type: 'nvarchar', length: 300, nullable: true })
   descripcion?: string | null;
 
@@ -73,11 +70,9 @@ export class Ticket {
   })
   estado: TicketStatus;
 
-  // Fotos
   @OneToMany(() => TicketPhoto, (photo) => photo.ticket, { cascade: true })
   fotos: TicketPhoto[];
 
-  // Problemas
   @ManyToMany(() => Problema, (problema) => problema.tickets)
   @JoinTable({
     name: 'Ticket_Problema',
@@ -86,7 +81,6 @@ export class Ticket {
   })
   problemas: Problema[];
 
-  // Emergencias (opcional: si decides tabla separada)
   @ManyToMany(() => Problema, (problema) => problema.ticketsEmergencia)
   @JoinTable({
     name: 'Ticket_Emergencia',
@@ -95,7 +89,6 @@ export class Ticket {
   })
   problemasEmergencia: Problema[];
 
-  // Técnicos asignados
   @ManyToMany(() => User, (user) => user.ticketsAtendidos)
   @JoinTable({
     name: 'Atiende',
@@ -104,11 +97,9 @@ export class Ticket {
   })
   tecnicosAsignados: User[];
 
-  // Pagos a técnicos
   @OneToMany(() => PagoTecnico, (pago) => pago.ticket)
   pagosTecnico: PagoTecnico[];
 
-  // Calificación
   @Column({ type: 'int', nullable: true })
   calificacionTecnico?: number | null;
 

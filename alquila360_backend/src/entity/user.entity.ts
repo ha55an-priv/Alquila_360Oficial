@@ -1,83 +1,78 @@
-import { Column, Entity, PrimaryColumn,ManyToMany,OneToMany, JoinTable } from "typeorm";
-import { Role } from "./rol.entity";
-import { TelefonoUsuario } from "./telefonoUsuario.entity";
-import { EmailUsuario } from "./emailUsuario.entity";
-import { Propiedad } from "./propiedad.entity";
-import { Contrato } from "./contrato.entity";
-import { MetodoPago } from "./metodoPago.entity";
-import { Ticket } from "./ticket.entity";
-import { PagoTecnico } from "./pagoTecnico.entity";
-import { Resena } from "./resena.entity";
+import {
+  Column,
+  Entity,
+  PrimaryColumn,
+  ManyToMany,
+  OneToMany,
+  JoinTable,
+} from 'typeorm';
+import { Role } from './rol.entity';
+import { TelefonoUsuario } from './telefonoUsuario.entity';
+import { EmailUsuario } from './emailUsuario.entity';
+import { Propiedad } from './propiedad.entity';
+import { Contrato } from './contrato.entity';
+import { MetodoPago } from './metodoPago.entity';
+import { Ticket } from './ticket.entity';
+import { PagoTecnico } from './pagoTecnico.entity';
+import { Resena } from './resena.entity';
 
-@Entity()
+@Entity('User')
 export class User {
-    
-    @PrimaryColumn() 
-    ci: number; 
+  @PrimaryColumn({ name: 'CI' })
+  ci: number;
 
-    @Column({ length: 100 }) 
-    name: string;
+  @Column({ length: 100 })
+  name: string;
 
-    @Column({ name: 'fecha_nacimiento', type: 'date', nullable: true })
-fechaNacimiento: Date | null;
+  @Column({ name: 'fecha_nacimiento', type: 'date', nullable: true })
+  fechaNacimiento: Date | null;
 
-    @Column({ length: 100 }) 
-    contrasena: string;
-    
-    @Column({ type: "boolean", default: true }) 
-    activacion: boolean; 
+  @Column({ length: 100 })
+  contrasena: string;
 
-    @ManyToMany(() => Role, role => role.users)
-    @JoinTable({
-        name: 'Usuario_Rol', 
-        joinColumn: {
-            name: 'Id_Usuario', 
-            referencedColumnName: 'ci' 
-        },
-        inverseJoinColumn: {
-            name: 'Id_Rol', 
-            referencedColumnName: 'idRol' 
-        }
-    })
-    roles: Role[];
+  @Column({ type: 'boolean', default: true })
+  activacion: boolean;
 
-    @OneToMany(() => TelefonoUsuario, telefono => telefono.usuario)
-    telefonos: TelefonoUsuario[];
+  @ManyToMany(() => Role, (role) => role.users)
+  @JoinTable({
+    name: 'Usuario_Rol',
+    joinColumn: { name: 'Id_Usuario', referencedColumnName: 'ci' },
+    inverseJoinColumn: { name: 'Id_Rol', referencedColumnName: 'idRol' },
+  })
+  roles: Role[];
 
-    @OneToMany(() => EmailUsuario, email => email.usuario)
-    emails: EmailUsuario[];
+  @OneToMany(() => TelefonoUsuario, (telefono) => telefono.usuario)
+  telefonos: TelefonoUsuario[];
 
-    @ManyToMany(() => Propiedad, propiedad => propiedad.propietarios)
-    @JoinTable({
-        name: 'Posee', 
-        joinColumn: {
-            name: 'Id_Propietario', 
-            referencedColumnName: 'ci' 
-        },
-        inverseJoinColumn: {
-            name: 'Id_Propiedad', 
-            referencedColumnName: 'idPropiedad' 
-        }
-    })
-    propiedades: Propiedad[];
-    @OneToMany(() => Contrato, contrato => contrato.inquilino)
-    contratosInquilino: Contrato[];
+  @OneToMany(() => EmailUsuario, (email) => email.usuario)
+  emails: EmailUsuario[];
 
-    @OneToMany(() => MetodoPago, metodo => metodo.inquilino)
-    metodosPago: MetodoPago[];
+  @ManyToMany(() => Propiedad, (propiedad) => propiedad.propietarios)
+  @JoinTable({
+    name: 'Posee',
+    joinColumn: { name: 'Id_Propietario', referencedColumnName: 'ci' },
+    inverseJoinColumn: { name: 'Id_Propiedad', referencedColumnName: 'idPropiedad' },
+  })
+  propiedades: Propiedad[];
 
-    @OneToMany(() => Ticket, ticket => ticket.inquilino)
-    ticketsReportados: Ticket[];
+  @OneToMany(() => Contrato, (contrato) => contrato.inquilino)
+  contratosInquilino: Contrato[];
 
-    @ManyToMany(() => Ticket, ticket => ticket.tecnicosAsignados)
-    ticketsAtendidos: Ticket[];
+  @OneToMany(() => MetodoPago, (metodo) => metodo.inquilino)
+  metodosPago: MetodoPago[];
 
-    @OneToMany(() => PagoTecnico, pago => pago.tecnico)
-    pagosRecibidos: PagoTecnico[];
+  @OneToMany(() => Ticket, (ticket) => ticket.inquilino)
+  ticketsReportados: Ticket[];
 
-    @OneToMany(() => Resena, resena => resena.criticon)
-    resenasCreadas: Resena[];
+  @ManyToMany(() => Ticket, (ticket) => ticket.tecnicosAsignados)
+  ticketsAtendidos: Ticket[];
 
-    @ManyToMany(() => Resena, resena => resena.criticados)
-    resenasRecibidas: Resena[];
+  @OneToMany(() => PagoTecnico, (pago) => pago.tecnico)
+  pagosRecibidos: PagoTecnico[];
+
+  @OneToMany(() => Resena, (resena) => resena.criticon)
+  resenasCreadas: Resena[];
+
+  @ManyToMany(() => Resena, (resena) => resena.criticados)
+  resenasRecibidas: Resena[];
 }

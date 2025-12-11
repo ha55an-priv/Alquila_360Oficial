@@ -1,16 +1,45 @@
-import { IsOptional, IsString, MaxLength, IsDateString } from 'class-validator';
+  import { PartialType } from '@nestjs/mapped-types';
+  import { CreateTicketDto } from './create-ticket.dto';
+  import { TicketStatus, TicketPriority } from '../../entity/ticket.entity';
+  import { IsOptional, IsEnum, IsDateString, IsArray, ArrayNotEmpty, IsNumber } from 'class-validator';
 
-export class UpdateTicketDto {
-  @IsOptional()
-  @IsString()
-  @MaxLength(300)
-  descripcion?: string;
+  export class UpdateTicketDto extends PartialType(CreateTicketDto) {
+    @IsOptional()
+    @IsEnum(TicketStatus)
+    estado?: TicketStatus;
 
-  @IsOptional()
-  @IsString()
-  estado?: string;
+    @IsOptional()
+    @IsEnum(TicketPriority)
+    prioridad?: TicketPriority;
 
-  @IsOptional()
-  @IsDateString()
-  fechaCierre?: string | null;
-}
+    @IsOptional()
+    @IsDateString()
+    fechaReporte?: string;
+
+    @IsOptional()
+    @IsDateString()
+    fechaCierre?: string;
+
+    @IsOptional()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsNumber({}, { each: true })
+    problemaIds?: number[];
+
+    @IsOptional()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsNumber({}, { each: true })
+    problemaEmergenciaIds?: number[];
+
+    @IsOptional()
+    @IsArray()
+    @ArrayNotEmpty()
+    fotoUrls?: string[];
+
+    @IsOptional()
+    calificacionTecnico?: number;
+
+    @IsOptional()
+    comentarioCalificacion?: string;
+  }

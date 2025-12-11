@@ -5,10 +5,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
-import { HController } from './h/h.controller';
 import { AuthModule } from './auth/auth.module';
 import { PropertyModule } from './property/property.module';
-import { TicketsModule } from './ticket/tickets.module';
+import { TicketsModule } from './ticket/ticket.module';
 import { ContratoModule } from './contrato/contrato.module';
 
 // Entidades requeridas
@@ -48,7 +47,7 @@ import { RoleModule } from './role/role.module';
     ContratoModule,
   ],
 
-  controllers: [AppController, HController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}

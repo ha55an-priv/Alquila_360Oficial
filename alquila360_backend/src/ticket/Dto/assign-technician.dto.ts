@@ -1,6 +1,12 @@
-import { IsInt } from 'class-validator';
+import { IsArray, IsInt, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 
 export class AssignTechnicianDto {
-  @IsInt()
-  idTecnico: number;
+  @IsArray()
+  @IsInt({ each: true })
+  @IsNotEmpty()
+  tecnicosIds: number[];
+
+  @IsOptional()
+  @MaxLength(300)
+  notas?: string;
 }
