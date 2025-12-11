@@ -45,7 +45,6 @@ export default function NewProperty() {
       fotos: fotos.length,
     });
 
-    /* NUEVO → abrir modal */
     setShowModal(true);
   };
 

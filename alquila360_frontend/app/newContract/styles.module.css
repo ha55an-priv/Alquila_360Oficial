@@ -141,7 +141,6 @@
   align-items: start;
 }
 
-/* ================= LEFT: FOTO + CONTACTO ================= */
 .new-contract-left {
   display: flex;
   flex-direction: column;
@@ -221,7 +220,6 @@
   outline: none;
 }
 
-/* ================= RIGHT: FORMULARIO ================= */
 .new-contract-right {
   display: flex;
   flex-direction: column;
@@ -321,7 +319,6 @@
   }
 }
 
-/* FONT FAMILY GENERAL */
 .new-contract-main,
 .new-contract-main * {
   font-family: "Poppins", sans-serif !important;
@@ -377,7 +374,6 @@
   background: #0056b3;
 }
 
-/* Animación */
 @keyframes fadeIn {
   from {
     opacity: 0;

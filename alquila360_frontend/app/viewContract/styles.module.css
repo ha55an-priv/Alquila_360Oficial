@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
 /* ========================================================= */
-/* ===============   HEADER IGUAL QUE contractList  ========= */
+/* ===============   HEADER    ========= */
 /* ========================================================= */
 
 .page {
@@ -145,7 +145,7 @@
   display: flex;
   gap: 30px;
   padding: 30px 40px;
-  flex-wrap: wrap; /* 🔥 Esto permite que infoCard baje debajo */
+  flex-wrap: wrap; 
   width: 100%;
 }
 
@@ -154,7 +154,7 @@
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
-  max-width: 500px; /* 🔥 Para evitar que rompa el diseño */
+  max-width: 500px; 
 }
 
 .thumbnails {

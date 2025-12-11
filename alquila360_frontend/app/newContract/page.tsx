@@ -45,7 +45,6 @@ export default function newContract() {
       documentos: documentos.length,
     });
 
-    // 🔹 Aquí mostrará el modal
     setShowModal(true);
   };
 
@@ -263,7 +262,7 @@ export default function newContract() {
         </div>
       </div>
 
-      {/* 🔹 MODAL */}
+      {/* MODAL */}
       {showModal && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalBox}>
